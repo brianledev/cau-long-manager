@@ -13,6 +13,8 @@ async function addMember(formData: FormData) {
     },
   })
   revalidatePath('/members')
+    // Thêm: reload luôn trang /
+  revalidatePath('/')
 }
 
 async function toggleMemberActive(formData: FormData) {
@@ -26,6 +28,8 @@ async function toggleMemberActive(formData: FormData) {
     data: { active: !active },
   })
   revalidatePath('/members')
+    // Thêm: reload luôn trang /
+  revalidatePath('/')
 }
 
 export default async function MembersPage() {
