@@ -32,6 +32,8 @@ model Session {
   shuttleFee  Int           @default(0)
   fundFee     Int           @default(0)
 
+  courtAddress String?
+  
   status      SessionStatus @default(PLANNED)
 
   hostId      String?

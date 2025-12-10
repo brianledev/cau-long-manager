@@ -70,6 +70,12 @@ export default async function SessionPage(props: any) {
               {session.status === 'CANCELED' && 'Đã hủy'}
             </span>
           </p>
+          {/* 👉 mới: địa chỉ sân */}
+          {session.courtAddress && (
+            <p className="text-xs text-gray-600">
+              Sân: {session.courtAddress}
+            </p>
+          )}
           {session.host && (
             <p className="card-subtitle">
               Host: <span className="font-medium">{session.host.name}</span>

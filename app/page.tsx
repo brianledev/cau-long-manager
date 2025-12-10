@@ -13,10 +13,12 @@ export default async function HomePage() {
     prisma.session.findMany({
       where: { status: 'PLANNED' },
       orderBy: { date: 'asc' },
+      include: { host: true }, // Chi tiet host
     }),
     prisma.session.findMany({
       orderBy: { date: 'desc' },
       take: 8,
+      include: { host: true }, 
     }),
   ])
 
@@ -43,7 +45,7 @@ export default async function HomePage() {
           action={createSessionAction}
           className="grid gap-2 md:grid-cols-2"
         >
-          <div className="field">
+          <div className="field max-w-[200px]">
             <span className="field-label">Ngày</span>
             <input
               type="date"
@@ -53,7 +55,7 @@ export default async function HomePage() {
             />
           </div>
 
-          <div className="field">
+          <div className="field max-w-[200px]">
             <span className="field-label">Host (optional)</span>
             <select
               name="hostId"
@@ -69,7 +71,18 @@ export default async function HomePage() {
             </select>
           </div>
 
-          <div className="field">
+           {/* ĐỊA CHỈ SÂN CẦU */}
+          <div className="field md:col-span-2">
+            <span className="field-label">Địa chỉ sân cầu / Ngày giờ</span>
+            <input
+              type="text"
+              name="courtAddress"
+              placeholder="Ví dụ: 17:30 ~ 19:30 Sân ABC, 123 Lê Lợi, Q.1"
+              className="field-input"
+            />
+          </div>         
+
+          <div className="field max-w-[200px]">
             <span className="field-label">Tiền sân</span>
             <input
               type="number"
@@ -79,7 +92,7 @@ export default async function HomePage() {
             />
           </div>
 
-          <div className="field">
+          <div className="field max-w-[200px]">
             <span className="field-label">Tiền cầu</span>
             <input
               type="number"
@@ -89,7 +102,7 @@ export default async function HomePage() {
             />
           </div>
 
-          <div className="field">
+          <div className="field max-w-[200px]">
             <span className="field-label">Tiền quỹ / nước</span>
             <input
               type="number"
@@ -129,7 +142,14 @@ export default async function HomePage() {
                   <div>
                     <div className="font-medium">
                       {new Date(s.date).toLocaleDateString('vi-VN')}
+                      {s.host && ` - Host by ${s.host.name}`}   {/* 👈 thêm host */}
                     </div>
+                    {/* hiển thị địa chỉ nếu có */}
+                    {s.courtAddress && (
+                      <div className="text-[11px] text-slate-600">
+                        Sân: {s.courtAddress}
+                      </div>
+                    )}
                     <div className="session-status">
                       Tổng tạm:{' '}
                       {total.toLocaleString('vi-VN')}
@@ -167,6 +187,7 @@ export default async function HomePage() {
                 <div>
                   <span className="font-medium">
                     {new Date(s.date).toLocaleDateString('vi-VN')}
+                    {s.host && ` - Host by ${s.host.name}`}
                   </span>{' '}
                   <span className="session-status">
                     ·{' '}
@@ -174,6 +195,12 @@ export default async function HomePage() {
                     {s.status === 'COMPLETED' && 'Đã hoàn thành'}
                     {s.status === 'CANCELED' && 'Đã hủy'}
                   </span>
+                  {/* thêm địa chỉ ở recent nếu muốn */}
+                  {s.courtAddress && (
+                    <div className="text-[11px] text-slate-600">
+                      Sân: {s.courtAddress}
+                    </div>
+                  )}
                 </div>
                 <a
                   href={`/sessions/${s.id}`}

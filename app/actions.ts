@@ -20,6 +20,7 @@ export async function createMemberAction(formData: FormData) {
     data: { name },
   })
 
+  revalidatePath('/')
   revalidatePath('/members')
 }
 
@@ -34,6 +35,7 @@ export async function toggleMemberActiveAction(formData: FormData) {
     data: { active },
   })
 
+  revalidatePath('/')
   revalidatePath('/members')
 }
 
@@ -47,7 +49,10 @@ export async function createSessionAction(formData: FormData) {
   const courtFee = Number(formData.get('courtFee') || 0)
   const shuttleFee = Number(formData.get('shuttleFee') || 0)
   const fundFee = Number(formData.get('fundFee') || 0)
-
+//  lấy thêm địa chỉ sân
+  const courtAddressRaw = String(formData.get('courtAddress') ?? '').trim()
+  const courtAddress = courtAddressRaw || null
+  
   const date = dateStr ? new Date(dateStr) : new Date()
 
   await prisma.session.create({
@@ -57,6 +62,7 @@ export async function createSessionAction(formData: FormData) {
       courtFee,
       shuttleFee,
       fundFee,
+      courtAddress, // lưu vào DB
     },
   })
 
@@ -89,6 +95,7 @@ export async function joinSessionAction(formData: FormData) {
     },
   })
 
+  revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)
 }
 
@@ -107,6 +114,7 @@ export async function joinGuestAction(formData: FormData) {
     },
   })
 
+  revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)
 }
 
@@ -121,6 +129,7 @@ export async function leaveSessionAction(formData: FormData) {
     where: { id: participationId },
   })
 
+  revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)
 }
 
@@ -161,6 +170,7 @@ export async function calculateFeeAction(formData: FormData) {
     }),
   ])
 
+  revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)
 }
 
@@ -177,6 +187,7 @@ export async function togglePaidAction(formData: FormData) {
     data: { paid },
   })
 
+  revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)
 }
 
@@ -193,6 +204,7 @@ export async function completeSessionAction(formData: FormData) {
     },
   })
 
+  revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)
   revalidatePath('/history')
 }
@@ -212,6 +224,7 @@ export async function cancelSessionAction(formData: FormData) {
     },
   })
 
+  revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)
   revalidatePath('/history')
 }
