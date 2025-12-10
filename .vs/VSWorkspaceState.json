@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.next",
+    "\\.next\\dev",
+    "\\.next\\dev\\build"
+  ],
+  "SelectedNode": "\\.next\\dev\\build\\package.json",
+  "PreviewInSolutionExplorer": false
+}

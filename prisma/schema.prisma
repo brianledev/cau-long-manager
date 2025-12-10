@@ -1,0 +1,65 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Trạng thái buổi đánh
+enum SessionStatus {
+  PLANNED
+  COMPLETED
+  CANCELED
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  participations Participation[]
+  hostedSessions Session[] @relation("HostSessions")
+}
+
+model Session {
+  id          String        @id @default(cuid())
+  date        DateTime      @default(now())
+  courtFee    Int           @default(0)
+  shuttleFee  Int           @default(0)
+  fundFee     Int           @default(0)
+
+  status      SessionStatus @default(PLANNED)
+
+  hostId      String?
+  host        Member?       @relation("HostSessions", fields: [hostId], references: [id])
+
+  note        String?
+
+  totalAmount Int?
+  qrContent   String?
+  qrAccountNo String?
+  qrBankId    String?
+  completedAt DateTime?
+
+  participations Participation[]
+}
+
+model Participation {
+  id        String   @id @default(cuid())
+  sessionId String
+  memberId  String?
+  guestName String?
+  isGuest   Boolean  @default(false)
+
+  session   Session  @relation(fields: [sessionId], references: [id])
+  member    Member?  @relation(fields: [memberId], references: [id])
+
+  customFee Int?
+  paid      Boolean @default(false)
+
+  @@index([sessionId])
+}

@@ -1,65 +1,191 @@
-import Image from "next/image";
+// app/page.tsx
+import { prisma } from '@/lib/db'
+import { createSessionAction } from '@/app/actions'
 
-export default function Home() {
+export default async function HomePage() {
+  const today = new Date()
+  const todayStr = today.toISOString().slice(0, 10)
+
+  const [members, openSessions, recentSessions] = await Promise.all([
+    prisma.member.findMany({
+      orderBy: { createdAt: 'asc' },
+    }),
+    prisma.session.findMany({
+      where: { status: 'PLANNED' },
+      orderBy: { date: 'asc' },
+    }),
+    prisma.session.findMany({
+      orderBy: { date: 'desc' },
+      take: 8,
+    }),
+  ])
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="main-container">
+      {/* HERO */}
+      <section className="card">
+        <h1 className="text-2xl font-bold mb-1">Quản lý cầu lông</h1>
+        <p className="card-subtitle">
+          Tạo buổi mới, host luân phiên, chia tiền, lưu lịch sử cho cả nhóm.
+        </p>
+      </section>
+
+      {/* TẠO BUỔI MỚI */}
+      <section className="card">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="card-title">Tạo buổi đánh mới</h2>
+          <span className="text-[11px] text-slate-500">
+            {members.length} thành viên
+          </span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+
+        <form
+          action={createSessionAction}
+          className="grid gap-2 md:grid-cols-2"
+        >
+          <div className="field">
+            <span className="field-label">Ngày</span>
+            <input
+              type="date"
+              name="date"
+              defaultValue={todayStr}
+              className="field-input"
             />
-            Deploy Now
-          </a>
+          </div>
+
+          <div className="field">
+            <span className="field-label">Host (optional)</span>
+            <select
+              name="hostId"
+              defaultValue=""
+              className="field-select"
+            >
+              <option value="">-- Chọn host --</option>
+              {members.map((m: any) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="field">
+            <span className="field-label">Tiền sân</span>
+            <input
+              type="number"
+              name="courtFee"
+              defaultValue={0}
+              className="field-input"
+            />
+          </div>
+
+          <div className="field">
+            <span className="field-label">Tiền cầu</span>
+            <input
+              type="number"
+              name="shuttleFee"
+              defaultValue={0}
+              className="field-input"
+            />
+          </div>
+
+          <div className="field">
+            <span className="field-label">Tiền quỹ / nước</span>
+            <input
+              type="number"
+              name="fundFee"
+              defaultValue={0}
+              className="field-input"
+            />
+          </div>
+
+          <div className="flex items-end">
+            <button type="submit">Tạo buổi</button>
+          </div>
+        </form>
+      </section>
+
+      {/* BUỔI ĐANG MỞ */}
+      <section className="card">
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="card-title">Buổi đang mở</h2>
+          <span className="text-[11px] text-slate-500">
+            {openSessions.length} buổi
+          </span>
+        </div>
+
+        {openSessions.length === 0 ? (
+          <p className="card-subtitle">
+            Hiện chưa có buổi nào đang mở. Tạo buổi mới ở phía trên.
+          </p>
+        ) : (
+          <ul className="session-list">
+            {openSessions.map((s: any) => {
+              const total =
+                s.totalAmount ?? s.courtFee + s.shuttleFee + s.fundFee
+
+              return (
+                <li key={s.id} className="session-item">
+                  <div>
+                    <div className="font-medium">
+                      {new Date(s.date).toLocaleDateString('vi-VN')}
+                    </div>
+                    <div className="session-status">
+                      Tổng tạm:{' '}
+                      {total.toLocaleString('vi-VN')}
+                      đ
+                    </div>
+                  </div>
+                  <a href={`/sessions/${s.id}`} className="text-blue-600 text-xs">
+                    Vào buổi
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+      </section>
+
+      {/* BUỔI GẦN ĐÂY */}
+      <section className="card">
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="card-title">Buổi gần đây</h2>
           <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/history"
+            className="text-xs text-blue-600"
           >
-            Documentation
+            Xem tất cả
           </a>
         </div>
-      </main>
+
+        {recentSessions.length === 0 ? (
+          <p className="card-subtitle">Chưa có buổi nào.</p>
+        ) : (
+          <ul className="session-list">
+            {recentSessions.map((s: any) => (
+              <li key={s.id} className="session-item">
+                <div>
+                  <span className="font-medium">
+                    {new Date(s.date).toLocaleDateString('vi-VN')}
+                  </span>{' '}
+                  <span className="session-status">
+                    ·{' '}
+                    {s.status === 'PLANNED' && 'Đang mở'}
+                    {s.status === 'COMPLETED' && 'Đã hoàn thành'}
+                    {s.status === 'CANCELED' && 'Đã hủy'}
+                  </span>
+                </div>
+                <a
+                  href={`/sessions/${s.id}`}
+                  className="text-blue-600 text-xs"
+                >
+                  Chi tiết
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
-  );
+  )
 }
