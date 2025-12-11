@@ -62,7 +62,7 @@ export async function createSessionAction(formData: FormData) {
       courtFee,
       shuttleFee,
       fundFee,
-      courtAddress, // lưu vào DB
+      courtAddress,
     },
   })
 

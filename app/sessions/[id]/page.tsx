@@ -148,6 +148,65 @@ export default async function SessionPage(props: any) {
             </form>
           </div>
         </section>
+        // <section className="card">
+        //   <h2 className="card-title mb-2">Tham gia buổi này</h2>
+
+        //   <div className="space-y-2">
+        //     {/* Join as member */}
+        //     <form
+        //       action={joinSessionAction}
+        //       className="flex flex-wrap items-center gap-10"
+        //     >
+        //       <input type="hidden" name="sessionId" value={session.id} />
+
+        //       <span className="text-xs text-slate-600 whitespace-nowrap">
+        //         Chọn tên:  
+        //       </span>
+        //       <span><br></br></span>
+        //       <select
+        //         name="memberId"
+        //         defaultValue=""
+        //         className="field-select flex-1 max-w-[180px]"
+        //       >
+        //         <option value="">-- Chọn tên --</option>
+        //         {members.map((m: any) => (
+        //           <option key={m.id} value={m.id}>
+        //             {m.name}
+        //           </option>
+        //         ))}
+        //       </select>
+
+        //       <button type="submit" className="shrink-0 ml-10">
+        //         Tham gia
+        //       </button>
+        //     </form>
+
+        //     {/* Join as guest */}
+        //     <form
+        //       action={joinGuestAction}
+        //       className="flex flex-wrap items-center gap-10"
+        //     >
+        //       <input type="hidden" name="sessionId" value={session.id} />
+
+        //       <span className="text-xs text-slate-600 whitespace-nowrap">
+        //         Khách vãng lai: 
+        //       </span>
+
+        //       <input
+        //         name="guestName"
+        //         placeholder="Tên khách vãng lai"
+        //         className="field-input flex-1 max-w-[180px]"
+        //       />
+
+        //       <button
+        //         type="submit"
+        //         className="bg-white text-slate-800 border border-slate-300 shrink-0 ml-10"
+        //       >
+        //         Thêm khách
+        //       </button>
+        //     </form>
+        //   </div>
+        // </section>          
       )}
 
       {/* DANH SÁCH THAM GIA */}
@@ -229,7 +288,7 @@ export default async function SessionPage(props: any) {
                           />
                           <button
                             type="submit"
-                            className="text-[10px] underline text-red-500 bg-transparent shadow-none"
+                            className="text-[10px] underline text-red-500 "
                           >
                             Xóa
                           </button>
