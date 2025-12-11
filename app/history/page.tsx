@@ -1,5 +1,6 @@
 // app/history/page.tsx
 import { prisma } from '@/lib/db'
+import PassGate from '@/components/PassGate'
 
 function statusLabel(status: string) {
   switch (status) {
@@ -28,6 +29,7 @@ export default async function HistoryPage() {
   const canceled = sessions.filter((s) => s.status === 'CANCELED').length
 
   return (
+    <PassGate>
     <div className="main-container">
       <section className="card">
         <h1 className="card-title">Lịch sử buổi đánh</h1>
@@ -96,5 +98,6 @@ export default async function HistoryPage() {
         </div>
       </section>
     </div>
+    </PassGate>
   )
 }

@@ -1,6 +1,8 @@
 // app/page.tsx
 import { prisma } from '@/lib/db'
 import { createSessionAction } from '@/app/actions'
+import PassGate from '@/components/PassGate'
+
 
 export default async function HomePage() {
   const today = new Date()
@@ -23,6 +25,7 @@ export default async function HomePage() {
   ])
 
   return (
+    <PassGate>
     <div className="main-container">
       {/* HERO */}
       <section className="card">
@@ -214,5 +217,6 @@ export default async function HomePage() {
         )}
       </section>
     </div>
+    </PassGate>
   )
 }

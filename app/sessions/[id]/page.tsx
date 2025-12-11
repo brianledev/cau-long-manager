@@ -10,6 +10,7 @@ import {
   cancelSessionAction,
 } from '@/app/actions'
 import { notFound } from 'next/navigation'
+import PassGate from '@/components/PassGate'
 
 const DEFAULT_BANK_ID = process.env.NEXT_PUBLIC_BANK_ID ?? 'MB'
 const DEFAULT_ACCOUNT_NO = process.env.NEXT_PUBLIC_ACCOUNT_NO ?? ''
@@ -55,6 +56,7 @@ export default async function SessionPage(props: any) {
   const canEdit = session.status === 'PLANNED'
 
   return (
+    <PassGate>
     <div className="main-container space-y-4">
       {/* HEADER */}
       <section className="card flex items-start justify-between gap-4">
@@ -459,5 +461,6 @@ export default async function SessionPage(props: any) {
         </section>
       )}
     </div>
+    </PassGate>
   )
 }

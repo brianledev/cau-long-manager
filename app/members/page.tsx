@@ -1,6 +1,7 @@
 // app/members/page.tsx
 import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import PassGate from '@/components/PassGate'
 
 async function addMember(formData: FormData) {
   'use server'
@@ -41,6 +42,7 @@ export default async function MembersPage() {
   const activeCount = members.filter((m) => m.active).length
 
   return (
+    <PassGate>
     <div className="main-container">
       <section className="card">
         <h1 className="card-title">Thành viên</h1>
@@ -123,5 +125,6 @@ export default async function MembersPage() {
         </div>
       </section>
     </div>
+    </PassGate>
   )
 }
