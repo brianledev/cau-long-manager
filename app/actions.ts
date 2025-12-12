@@ -7,7 +7,8 @@ import { revalidatePath } from 'next/cache'
 // Tính tiền mỗi người, làm tròn lên 1.000
 function calcPerPersonFee(totalAmount: number, count: number) {
   if (count <= 0) return 0
-  return Math.ceil(totalAmount / count / 1000) * 1000
+  // return Math.ceil(totalAmount / count / 1000) * 1000
+  return Math.floor(totalAmount / count)
 }
 
 /* ========= MEMBER ========= */
