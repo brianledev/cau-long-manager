@@ -53,6 +53,7 @@ export default async function StatsPage() {
 
   for (const p of participations) {
     if (!p.memberId || !p.member) continue
+    if (p.session.status !== 'COMPLETED') continue // ✅ chỉ tính buổi hoàn thành
     const key = p.memberId
     const existing = allTimeMap.get(key) ?? {
       id: key,
@@ -61,7 +62,7 @@ export default async function StatsPage() {
       totalPaid: 0,
     }
     existing.sessions += 1
-    if (p.customFee != null) {
+    if (p.customFee != null && p.session?.status === 'COMPLETED') {
       existing.totalPaid += p.customFee
     }
     allTimeMap.set(key, existing)
@@ -81,6 +82,7 @@ export default async function StatsPage() {
   for (const p of participations) {
     if (!p.memberId || !p.member || !p.session) continue
     if (p.session.date < monthAgo) continue
+    if (p.session.status !== 'COMPLETED') continue // ✅ chỉ tính buổi hoàn thành
 
     const key = p.memberId
     const existing = monthMap.get(key) ?? {
