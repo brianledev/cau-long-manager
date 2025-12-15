@@ -20,6 +20,8 @@ const DEFAULT_ACCOUNT_NO = process.env.NEXT_PUBLIC_ACCOUNT_NO ?? ''
 export default async function SessionPage(props: any) {
   // Next 16: params có thể là Promise, nên luôn await
   const params = await props.params
+  const searchParams = await props.searchParams  // ✅ thêm dòng này
+  const saved = searchParams?.saved === '1'      // ✅ thêm dòng này
   const id = params?.id as string | undefined
 
   if (!id) {
@@ -61,8 +63,9 @@ export default async function SessionPage(props: any) {
   const btnPrimary = 'btn btn-primary'
 
   return (
-    <PassGate>
-    <div className="main-container space-y-4">
+    // <PassGate>
+
+    <div className="main-container space-y-4">    
       {/* HEADER */}
       <section className="card flex items-start justify-between gap-4">
         <div>
@@ -93,12 +96,106 @@ export default async function SessionPage(props: any) {
               Ghi chú: <span className="font-medium">{session.note}</span>
             </p>
           )}
+      {saved && (
+        <div className="mt-2 rounded-md bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+          ✅ Lưu thay đổi thành công
+        </div>
+      )} 
         </div>
         <a href="/" className="text-xs text-blue-600 hover:underline">
           ← Về trang chính
         </a>
       </section>
+        <section className="card space-y-3">
+          <h2 className="card-title">Chỉnh sửa buổi</h2>
 
+          <form action={updateSessionAction} className="grid gap-2 md:grid-cols-2">
+            <input type="hidden" name="sessionId" value={session.id} />
+
+            <label className="field max-w-[200px] ">
+              <span className="field-label">Ngày</span>
+              <input
+                type="date"
+                name="date"
+                defaultValue={new Date(session.date).toISOString().slice(0, 10)}
+                className="field-input"
+              />
+            </label>
+
+            <label className="field max-w-[240px]">
+              <span className="field-label">Host</span>
+              <select
+                name="hostId"
+                defaultValue={session.hostId ?? ''}
+                className="field-select"
+              >
+                <option value="">-- Không chọn --</option>
+                {members.map((m: any) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="field md:col-span-2">
+              <span className="field-label">Địa chỉ sân</span>
+              <input
+                type="text"
+                name="courtAddress"
+                defaultValue={session.courtAddress ?? ''}
+                className="field-input"
+                placeholder="VD: Sân An Bình / 18h ~ 20h"
+              />
+            </label>
+
+            <label className="field max-w-[200px]">
+              <span className="field-label">Tiền sân</span>
+              <input
+                type="number"
+                name="courtFee"
+                defaultValue={session.courtFee ?? 0}
+                className="field-input"
+              />
+            </label>
+
+            <label className="field max-w-[200px]">
+              <span className="field-label">Tiền cầu</span>
+              <input
+                type="number"
+                name="shuttleFee"
+                defaultValue={session.shuttleFee ?? 0}
+                className="field-input"
+              />
+            </label>
+
+            <label className="field max-w-[200px]">
+              <span className="field-label">Quỹ / nước</span>
+              <input
+                type="number"
+                name="fundFee"
+                defaultValue={session.fundFee ?? 0}
+                className="field-input"
+              />
+            </label>
+
+            <label className="field md:col-span-2 max-w-[200px]">
+              <span className="field-label">Ghi chú</span>
+                <textarea
+                  name="note"
+                  defaultValue={session.note ?? ''}
+                  className="field-input"
+                  rows={4}                  // ✅ tăng chiều cao
+                  placeholder="Nhập ghi chú..."
+                />
+            </label>
+
+            <div className="md:col-span-2 flex justify-end">
+              <button type="submit">Lưu thay đổi</button>
+            </div>
+          </form>
+        </section>
+ 
       {/* JOIN / GUEST */}
       {canEdit && (
         <section className="card space-y-3 text-sm">
@@ -264,7 +361,7 @@ export default async function SessionPage(props: any) {
       {/* FORM "TÍNH TIỀN" */}
       {canEdit && (
         <>
-        <section className="card space-y-3">
+        {/* <section className="card space-y-3">
           <h2 className="card-title">Chỉnh sửa buổi</h2>
 
           <form action={updateSessionAction} className="grid gap-2 md:grid-cols-2">
@@ -280,7 +377,7 @@ export default async function SessionPage(props: any) {
               />
             </label>
 
-            {/* <label className="field max-w-[240px]">
+            <label className="field max-w-[240px]">
               <span className="field-label">Host</span>
               <select
                 name="hostId"
@@ -294,7 +391,7 @@ export default async function SessionPage(props: any) {
                   </option>
                 ))}
               </select>
-            </label> */}
+            </label>
 
             <label className="field md:col-span-2">
               <span className="field-label">Địa chỉ sân</span>
@@ -346,19 +443,13 @@ export default async function SessionPage(props: any) {
                   rows={4}                  // ✅ tăng chiều cao
                   placeholder="Nhập ghi chú..."
                 />
-              {/* <input
-                type="text"
-                name="note"
-                defaultValue={session.note ?? ''}
-                className="field-input"
-              /> */}
             </label>
 
             <div className="md:col-span-2 flex justify-end">
               <button type="submit">Lưu thay đổi</button>
             </div>
           </form>
-        </section>
+        </section> */}
         <section className="card space-y-3 text-sm">
           <h2 className="card-title">Tính tiền</h2>
           <p className="card-subtitle">
@@ -505,6 +596,6 @@ export default async function SessionPage(props: any) {
         </section>
       )}
     </div>
-    </PassGate>
+    // </PassGate>
   )
 }

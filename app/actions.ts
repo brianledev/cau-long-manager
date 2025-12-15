@@ -263,11 +263,14 @@ export async function updateSessionAction(formData: FormData) {
     },
   })
 
-revalidatePath(`/sessions/${sessionId}`)
-revalidatePath(`/sessions`)
+// revalidatePath(`/sessions/${sessionId}`)
+// revalidatePath(`/sessions`)
 revalidatePath(`/`)
-
+if (sessionId) {
+  revalidatePath(`/sessions/${sessionId}`)
+  redirect(`/sessions/${sessionId}?saved=1`)
+}
 // ✅ bắt Next “tải lại” trang hiện tại ngay
-// redirect(`/sessions/${sessionId}`)
+// redirect(`/sessions/${sessionId}?saved=1`)
 
 }
