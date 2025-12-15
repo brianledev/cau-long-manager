@@ -3,6 +3,8 @@
 
 import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+
 
 // Tính tiền mỗi người, làm tròn lên 1.000
 function calcPerPersonFee(totalAmount: number, count: number) {
@@ -228,4 +230,44 @@ export async function cancelSessionAction(formData: FormData) {
   revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)
   revalidatePath('/history')
+}
+
+// Cập nhật thông tin buổi đánh
+export async function updateSessionAction(formData: FormData) {
+  const sessionId = String(formData.get('sessionId') || '')
+  if (!sessionId) throw new Error('Missing sessionId')
+
+  const dateStr = String(formData.get('date') || '')
+  const hostIdRaw = String(formData.get('hostId') || '')
+  const courtAddress = String(formData.get('courtAddress') || '')
+  const note = String(formData.get('note') || '')
+
+  const courtFee = Number(formData.get('courtFee') || 0)
+  const shuttleFee = Number(formData.get('shuttleFee') || 0)
+  const fundFee = Number(formData.get('fundFee') || 0)
+
+  // ✅ tổng tiền tự tính từ 3 phí
+  const totalAmount = courtFee + shuttleFee + fundFee
+
+  await prisma.session.update({
+    where: { id: sessionId },
+    data: {
+      date: dateStr ? new Date(dateStr) : undefined,
+      hostId: hostIdRaw ? hostIdRaw : null,
+      courtAddress: courtAddress || null,
+      note: note || null,
+      courtFee,
+      shuttleFee,
+      fundFee,
+      totalAmount, // ✅ update luôn
+    },
+  })
+
+revalidatePath(`/sessions/${sessionId}`)
+revalidatePath(`/sessions`)
+revalidatePath(`/`)
+
+// ✅ bắt Next “tải lại” trang hiện tại ngay
+// redirect(`/sessions/${sessionId}`)
+
 }

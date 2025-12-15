@@ -8,9 +8,11 @@ import {
   togglePaidAction,
   completeSessionAction,
   cancelSessionAction,
+  updateSessionAction,
 } from '@/app/actions'
 import { notFound } from 'next/navigation'
 import PassGate from '@/components/PassGate'
+
 
 const DEFAULT_BANK_ID = process.env.NEXT_PUBLIC_BANK_ID ?? 'MB'
 const DEFAULT_ACCOUNT_NO = process.env.NEXT_PUBLIC_ACCOUNT_NO ?? ''
@@ -54,6 +56,9 @@ export default async function SessionPage(props: any) {
 
   const totalAmount = session.totalAmount ?? 0
   const canEdit = session.status === 'PLANNED'
+  const inputCls = 'input w-full'
+  const selectCls = 'select w-full'
+  const btnPrimary = 'btn btn-primary'
 
   return (
     <PassGate>
@@ -149,66 +154,7 @@ export default async function SessionPage(props: any) {
               </button>
             </form>
           </div>
-        </section>
-        // <section className="card">
-        //   <h2 className="card-title mb-2">Tham gia buổi này</h2>
-
-        //   <div className="space-y-2">
-        //     {/* Join as member */}
-        //     <form
-        //       action={joinSessionAction}
-        //       className="flex flex-wrap items-center gap-10"
-        //     >
-        //       <input type="hidden" name="sessionId" value={session.id} />
-
-        //       <span className="text-xs text-slate-600 whitespace-nowrap">
-        //         Chọn tên:  
-        //       </span>
-        //       <span><br></br></span>
-        //       <select
-        //         name="memberId"
-        //         defaultValue=""
-        //         className="field-select flex-1 max-w-[180px]"
-        //       >
-        //         <option value="">-- Chọn tên --</option>
-        //         {members.map((m: any) => (
-        //           <option key={m.id} value={m.id}>
-        //             {m.name}
-        //           </option>
-        //         ))}
-        //       </select>
-
-        //       <button type="submit" className="shrink-0 ml-10">
-        //         Tham gia
-        //       </button>
-        //     </form>
-
-        //     {/* Join as guest */}
-        //     <form
-        //       action={joinGuestAction}
-        //       className="flex flex-wrap items-center gap-10"
-        //     >
-        //       <input type="hidden" name="sessionId" value={session.id} />
-
-        //       <span className="text-xs text-slate-600 whitespace-nowrap">
-        //         Khách vãng lai: 
-        //       </span>
-
-        //       <input
-        //         name="guestName"
-        //         placeholder="Tên khách vãng lai"
-        //         className="field-input flex-1 max-w-[180px]"
-        //       />
-
-        //       <button
-        //         type="submit"
-        //         className="bg-white text-slate-800 border border-slate-300 shrink-0 ml-10"
-        //       >
-        //         Thêm khách
-        //       </button>
-        //     </form>
-        //   </div>
-        // </section>          
+        </section>   
       )}
 
       {/* DANH SÁCH THAM GIA */}
@@ -317,6 +263,102 @@ export default async function SessionPage(props: any) {
 
       {/* FORM "TÍNH TIỀN" */}
       {canEdit && (
+        <>
+        <section className="card space-y-3">
+          <h2 className="card-title">Chỉnh sửa buổi</h2>
+
+          <form action={updateSessionAction} className="grid gap-2 md:grid-cols-2">
+            <input type="hidden" name="sessionId" value={session.id} />
+
+            <label className="field max-w-[200px] ">
+              <span className="field-label">Ngày</span>
+              <input
+                type="date"
+                name="date"
+                defaultValue={new Date(session.date).toISOString().slice(0, 10)}
+                className="field-input"
+              />
+            </label>
+
+            {/* <label className="field max-w-[240px]">
+              <span className="field-label">Host</span>
+              <select
+                name="hostId"
+                defaultValue={session.hostId ?? ''}
+                className="field-select"
+              >
+                <option value="">-- Không chọn --</option>
+                {members.map((m: any) => (
+                  <option key={m.id} value={m.id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
+            </label> */}
+
+            <label className="field md:col-span-2">
+              <span className="field-label">Địa chỉ sân</span>
+              <input
+                type="text"
+                name="courtAddress"
+                defaultValue={session.courtAddress ?? ''}
+                className="field-input"
+                placeholder="VD: Sân An Bình / 18h ~ 20h"
+              />
+            </label>
+
+            <label className="field max-w-[200px]">
+              <span className="field-label">Tiền sân</span>
+              <input
+                type="number"
+                name="courtFee"
+                defaultValue={session.courtFee ?? 0}
+                className="field-input"
+              />
+            </label>
+
+            <label className="field max-w-[200px]">
+              <span className="field-label">Tiền cầu</span>
+              <input
+                type="number"
+                name="shuttleFee"
+                defaultValue={session.shuttleFee ?? 0}
+                className="field-input"
+              />
+            </label>
+
+            <label className="field max-w-[200px]">
+              <span className="field-label">Quỹ / nước</span>
+              <input
+                type="number"
+                name="fundFee"
+                defaultValue={session.fundFee ?? 0}
+                className="field-input"
+              />
+            </label>
+
+            <label className="field md:col-span-2 max-w-[200px]">
+              <span className="field-label">Ghi chú</span>
+                <textarea
+                  name="note"
+                  defaultValue={session.note ?? ''}
+                  className="field-input"
+                  rows={4}                  // ✅ tăng chiều cao
+                  placeholder="Nhập ghi chú..."
+                />
+              {/* <input
+                type="text"
+                name="note"
+                defaultValue={session.note ?? ''}
+                className="field-input"
+              /> */}
+            </label>
+
+            <div className="md:col-span-2 flex justify-end">
+              <button type="submit">Lưu thay đổi</button>
+            </div>
+          </form>
+        </section>
         <section className="card space-y-3 text-sm">
           <h2 className="card-title">Tính tiền</h2>
           <p className="card-subtitle">
@@ -389,6 +431,7 @@ export default async function SessionPage(props: any) {
             </div>
           </form>
         </section>
+        </>
       )}
 
       {/* QR + TỔNG TIỀN (khi đã tính) */}
@@ -426,6 +469,7 @@ export default async function SessionPage(props: any) {
             alt="VietQR"
           />
         </section>
+        
       )}
 
       {/* HOÀN THÀNH / HỦY BUỔI */}
