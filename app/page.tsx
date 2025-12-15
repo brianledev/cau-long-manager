@@ -3,7 +3,6 @@ import { prisma } from '@/lib/db'
 import { createSessionAction } from '@/app/actions'
 import PassGate from '@/components/PassGate'
 
-
 export default async function HomePage() {
   const today = new Date()
   const todayStr = today.toISOString().slice(0, 10)
@@ -25,7 +24,7 @@ export default async function HomePage() {
   ])
 
   return (
-    <PassGate>
+    //<PassGate>
     <div className="main-container">
       {/* HERO */}
       <section className="card">
@@ -217,6 +216,6 @@ export default async function HomePage() {
         )}
       </section>
     </div>
-    </PassGate>
+    //</PassGate>
   )
 }
