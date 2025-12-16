@@ -68,9 +68,14 @@ export default async function StatsPage() {
     allTimeMap.set(key, existing)
   }
 
-  const allTimeStats = Array.from(allTimeMap.values()).sort(
-    (a, b) => b.sessions - a.sessions,
-  )
+  // const allTimeStats = Array.from(allTimeMap.values()).sort(
+  //   (a, b) => b.sessions - a.sessions,
+  // )
+
+  const allTimeStats = Array.from(allTimeMap.values()).sort((a, b) =>
+    (b.sessions - a.sessions) ||
+    ((b.totalPaid ?? 0) - (a.totalPaid ?? 0))
+  );
 
   const topAll = allTimeStats[0]
 
