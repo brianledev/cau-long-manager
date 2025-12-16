@@ -122,7 +122,7 @@ export default async function SessionPage(props: any) {
               />
             </label>
 
-            <label className="field max-w-[240px]">
+            <label className="field max-w-60">
               <span className="field-label">Host</span>
               <select
                 name="hostId"
@@ -508,7 +508,7 @@ export default async function SessionPage(props: any) {
           </div>
 
           <img
-            className="h-32 w-auto border border-slate-200 rounded-md bg-white"
+            className="h-80 w-auto border border-slate-200 rounded-md bg-white"
             src={
               `https://img.vietqr.io/image/${
                 session.qrBankId || DEFAULT_BANK_ID

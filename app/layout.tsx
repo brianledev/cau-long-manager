@@ -24,12 +24,12 @@ export default function RootLayout({
       <body className="h-full bg-slate-50 selection:bg-blue-100 selection:text-blue-900">
         <div className="flex min-h-full flex-col">
           {/* Header - Glassmorphism */}
-          <header className="sticky top-0 z-50 border-b border-white/20 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 shadow-sm">
+          <header className="sticky top-0 z-50 border-b border-white/20 bg-white/70 backdrop-blur-xl supports-backdrop-filter:bg-white/60 shadow-sm">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-between">
                 {/* Logo & Brand */}
                 <a href="/" className="flex items-center gap-3 transition-all hover:opacity-80 hover:scale-105 active:scale-95">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-xl shadow-lg shadow-blue-500/30 ring-2 ring-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-blue-500 to-blue-600 text-xl shadow-lg shadow-blue-500/30 ring-2 ring-white">
                     🏸
                   </div>
                   <div className="hidden sm:block">

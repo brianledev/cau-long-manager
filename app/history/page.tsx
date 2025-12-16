@@ -32,7 +32,7 @@ export default async function HistoryPage() {
     // <PassGate>
     <div className="main-container space-y-4">
       <section className="card">
-        <h1 className="card-title text-xl bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Lịch sử buổi đánh</h1>
+        <h1 className="card-title text-xl bg-linear-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Lịch sử buổi đánh</h1>
         <p className="card-subtitle">
           Xem lại tất cả các buổi đánh cầu đã tạo, trạng thái và số người tham
           gia.
@@ -87,7 +87,7 @@ export default async function HistoryPage() {
         <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
           <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-slate-200 bg-slate-100 text-left text-xs font-semibold uppercase tracking-wider text-slate-600 dark:bg-slate-800/40 dark:text-slate-300">
+          <tr className="border-b border-slate-200 bg-slate-100 text-left text-xs font-semibold uppercase tracking-wider text-slate-600">
             <th className="px-4 py-3">Ngày</th>
             <th className="px-4 py-3">Trạng thái</th>
             <th className="px-4 py-3">Host</th>

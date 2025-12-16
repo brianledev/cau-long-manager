@@ -111,7 +111,7 @@ export default async function StatsPage() {
   return (
     <div className="main-container space-y-4">
       <div className="card">
-        <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Thống kê</h1>
+        <h1 className="text-xl font-bold tracking-tight bg-linear-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Thống kê</h1>
         <p className="card-subtitle">
           Tổng quan buổi đánh, người đi chăm, tổng tiền đã chia.
         </p>
@@ -119,7 +119,7 @@ export default async function StatsPage() {
 
       {/* TỔNG QUAN */}
       <section className="grid gap-4 md:grid-cols-3">
-        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 p-5 ring-1 ring-blue-200 transition-all hover:shadow-lg hover:-translate-y-0.5">
+        <div className="group relative overflow-hidden rounded-2xl bg-linear-to-br from-blue-50 to-blue-100 p-5 ring-1 ring-blue-200 transition-all hover:shadow-lg hover:-translate-y-0.5">
           <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-blue-200/30"></div>
           <div className="relative space-y-2">
             <div className="flex items-center gap-2 text-xs font-medium text-blue-600">
@@ -138,7 +138,7 @@ export default async function StatsPage() {
           </div>
         </div>
 
-        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 p-5 ring-1 ring-emerald-200 transition-all hover:shadow-lg hover:-translate-y-0.5">
+        <div className="group relative overflow-hidden rounded-2xl bg-linear-to-br from-emerald-50 to-emerald-100 p-5 ring-1 ring-emerald-200 transition-all hover:shadow-lg hover:-translate-y-0.5">
           <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-emerald-200/30"></div>
           <div className="relative space-y-2">
             <div className="flex items-center gap-2 text-xs font-medium text-emerald-600">
@@ -161,7 +161,7 @@ export default async function StatsPage() {
         </div>
 
         {topAll && (
-          <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 p-5 ring-1 ring-amber-200 transition-all hover:shadow-lg hover:-translate-y-0.5">
+          <div className="group relative overflow-hidden rounded-2xl bg-linear-to-br from-amber-50 to-amber-100 p-5 ring-1 ring-amber-200 transition-all hover:shadow-lg hover:-translate-y-0.5">
             <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-amber-200/30"></div>
             <div className="relative space-y-2">
               <div className="flex items-center gap-2 text-xs font-medium text-amber-600">
