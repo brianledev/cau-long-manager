@@ -34,10 +34,26 @@ async function toggleMemberActive(formData: FormData) {
 }
 
 export default async function MembersPage() {
+  // const members = await prisma.member.findMany({
+  //   orderBy: { createdAt: 'asc' },
+  //   include: { participations: true },
+  // })
+  
   const members = await prisma.member.findMany({
     orderBy: { createdAt: 'asc' },
-    include: { participations: true },
-  })
+    include: {
+      participations: {
+        where: {
+          // loại guest nếu cần
+          isGuest: false,
+          // chỉ lấy participation thuộc buổi đã hoàn thành
+          session: { is: { status: 'COMPLETED' } },
+        },
+        // vì chỉ cần đếm, giảm payload cho nhẹ
+        select: { id: true },
+      },
+     },
+    })
 
   const activeCount = members.filter((m) => m.active).length
 
