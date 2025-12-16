@@ -266,6 +266,7 @@ export async function updateSessionAction(formData: FormData) {
 // revalidatePath(`/sessions/${sessionId}`)
 // revalidatePath(`/sessions`)
 revalidatePath(`/`)
+revalidatePath('/history') // ✅ thêm
 if (sessionId) {
   revalidatePath(`/sessions/${sessionId}`)
   redirect(`/sessions/${sessionId}?saved=1`)
