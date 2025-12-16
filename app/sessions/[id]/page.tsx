@@ -122,7 +122,7 @@ export default async function SessionPage(props: any) {
               />
             </label>
 
-            {/* <label className="field max-w-[240px]">
+            <label className="field max-w-[240px]">
               <span className="field-label">Host</span>
               <select
                 name="hostId"
@@ -136,7 +136,7 @@ export default async function SessionPage(props: any) {
                   </option>
                 ))}
               </select>
-            </label> */}
+            </label>
 
             <label className="field md:col-span-2 mb-0">
               <span className="field-label">Địa chỉ sân</span>
