@@ -28,7 +28,7 @@ export default async function HomePage() {
     <div className="main-container">
       {/* HERO */}
       <section className="card">
-        <h1 className="text-2xl font-bold mb-1">Quản lý cầu lông</h1>
+        <h1 className="text-2xl font-bold tracking-tight mb-2 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent dark:from-blue-400 dark:to-cyan-300">Quản lý cầu lông</h1>
         <p className="card-subtitle">
           Tạo buổi mới, host luân phiên, chia tiền, lưu lịch sử cho cả nhóm.
         </p>
@@ -36,16 +36,19 @@ export default async function HomePage() {
 
       {/* TẠO BUỔI MỚI */}
       <section className="card">
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-3">
           <h2 className="card-title">Tạo buổi đánh mới</h2>
-          <span className="text-[11px] text-slate-500">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-700 ring-1 ring-inset ring-blue-200">
+            <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+            </svg>
             {members.length} thành viên
           </span>
         </div>
 
         <form
           action={createSessionAction}
-          className="grid gap-2 md:grid-cols-2"
+          className="grid gap-4 md:grid-cols-2"
         >
           <div className="field max-w-[200px]">
             <span className="field-label">Ngày</span>
@@ -115,16 +118,17 @@ export default async function HomePage() {
           </div>
 
           <div className="flex items-end">
-            <button type="submit">Tạo buổi</button>
+            <button type="submit" className="h-[42px] w-full md:w-auto">Tạo buổi</button>
           </div>
         </form>
       </section>
 
       {/* BUỔI ĐANG MỞ */}
       <section className="card">
-        <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center justify-between mb-3">
           <h2 className="card-title">Buổi đang mở</h2>
-          <span className="text-[11px] text-slate-500">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             {openSessions.length} buổi
           </span>
         </div>
@@ -140,26 +144,39 @@ export default async function HomePage() {
                 s.totalAmount ?? s.courtFee + s.shuttleFee + s.fundFee
 
               return (
-                <li key={s.id} className="session-item">
-                  <div>
-                    <div className="font-medium">
-                      {new Date(s.date).toLocaleDateString('vi-VN')}
-                      {s.host && ` - Host by ${s.host.name}`}   {/* 👈 thêm host */}
+                <li key={s.id} className="session-item group">
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-slate-900">
+                        {new Date(s.date).toLocaleDateString('vi-VN')}
+                      </span>
+                      {s.host && (
+                        <span className="inline-flex items-center rounded-lg bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600 border border-slate-200">
+                          🏸 {s.host.name}
+                        </span>
+                      )}
                     </div>
-                    {/* hiển thị địa chỉ nếu có */}
                     {s.courtAddress && (
-                      <div className="text-[11px] text-slate-600">
-                        Sân: {s.courtAddress}
+                      <div className="flex items-start gap-1.5 text-[11px] text-slate-600">
+                        <svg className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span className="line-clamp-1">{s.courtAddress}</span>
                       </div>
                     )}
-                    <div className="session-status">
-                      Tổng tạm:{' '}
-                      {total.toLocaleString('vi-VN')}
-                      đ
+                    <div className="session-status font-semibold">
+                      💰 {total.toLocaleString('vi-VN')}đ
                     </div>
                   </div>
-                  <a href={`/sessions/${s.id}`} className="text-blue-600 text-xs">
+                  <a 
+                    href={`/sessions/${s.id}`} 
+                    className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold text-white shadow-sm shadow-blue-600/20 transition-all hover:bg-blue-700 hover:shadow-md hover:shadow-blue-600/30 hover:-translate-y-0.5 active:translate-y-0"
+                  >
                     Vào buổi
+                    <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </a>
                 </li>
               )
@@ -170,13 +187,16 @@ export default async function HomePage() {
 
       {/* BUỔI GẦN ĐÂY */}
       <section className="card">
-        <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center justify-between mb-3">
           <h2 className="card-title">Buổi gần đây</h2>
           <a
             href="/history"
-            className="text-xs text-blue-600"
+            className="group inline-flex items-center gap-1 text-xs font-medium text-blue-600 transition-colors hover:text-blue-700"
           >
             Xem tất cả
+            <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </a>
         </div>
 
@@ -184,34 +204,53 @@ export default async function HomePage() {
           <p className="card-subtitle">Chưa có buổi nào.</p>
         ) : (
           <ul className="session-list">
-            {recentSessions.map((s: any) => (
-              <li key={s.id} className="session-item">
-                <div>
-                  <span className="font-medium">
-                    {new Date(s.date).toLocaleDateString('vi-VN')}
-                    {s.host && ` - Host by ${s.host.name}`}
-                  </span>{' '}
-                  <span className="session-status">
-                    ·{' '}
-                    {s.status === 'PLANNED' && 'Đang mở'}
-                    {s.status === 'COMPLETED' && 'Đã hoàn thành'}
-                    {s.status === 'CANCELED' && 'Đã hủy'}
-                  </span>
-                  {/* thêm địa chỉ ở recent nếu muốn */}
-                  {s.courtAddress && (
-                    <div className="text-[11px] text-slate-600">
-                      Sân: {s.courtAddress}
+            {recentSessions.map((s: any) => {
+              const statusConfig = {
+                PLANNED: { label: 'Đang mở', color: 'bg-emerald-50 text-emerald-700 ring-emerald-200', icon: '⏳' },
+                COMPLETED: { label: 'Đã hoàn thành', color: 'bg-blue-50 text-blue-700 ring-blue-200', icon: '✅' },
+                CANCELED: { label: 'Đã hủy', color: 'bg-slate-100 text-slate-600 ring-slate-200', icon: '❌' },
+              }
+              const status = statusConfig[s.status as keyof typeof statusConfig] || statusConfig.PLANNED
+              
+              return (
+                <li key={s.id} className="session-item group">
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-medium text-slate-900">
+                        {new Date(s.date).toLocaleDateString('vi-VN')}
+                      </span>
+                      {s.host && (
+                        <span className="inline-flex items-center rounded-lg bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600 border border-slate-200">
+                          🏸 {s.host.name}
+                        </span>
+                      )}
+                      <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ring-1 ring-inset ${status.color}`}>
+                        <span>{status.icon}</span>
+                        {status.label}
+                      </span>
                     </div>
-                  )}
-                </div>
-                <a
-                  href={`/sessions/${s.id}`}
-                  className="text-blue-600 text-xs"
-                >
-                  Chi tiết
-                </a>
-              </li>
-            ))}
+                    {s.courtAddress && (
+                      <div className="flex items-start gap-1.5 text-[11px] text-slate-600">
+                        <svg className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span className="line-clamp-1">{s.courtAddress}</span>
+                      </div>
+                    )}
+                  </div>
+                  <a
+                    href={`/sessions/${s.id}`}
+                    className="inline-flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-600 ring-1 ring-inset ring-slate-200 transition-all hover:bg-slate-50 hover:text-blue-600 hover:ring-blue-200"
+                  >
+                    Chi tiết
+                    <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         )}
       </section>

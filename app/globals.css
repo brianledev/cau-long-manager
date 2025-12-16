@@ -1,200 +1,109 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Nền & font cơ bản */
-body {
-  margin: 0;
-  min-height: 100vh;
-  background-color: #f3f4f6; /* xám rất nhạt */
-  color: #0f172a;            /* text-slate-900 */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+@theme {
+  --color-background: hsl(210 40% 98%);
+  --color-foreground: hsl(222 47% 11%);
+  
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(222 47% 11%);
+  
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(222 47% 11%);
+  
+  --color-primary: hsl(217 91% 60%);
+  --color-primary-foreground: hsl(210 40% 98%);
+  
+  --color-secondary: hsl(210 40% 96.1%);
+  --color-secondary-foreground: hsl(222 47% 11%);
+  
+  --color-muted: hsl(210 40% 96.1%);
+  --color-muted-foreground: hsl(215 16% 47%);
+  
+  --color-accent: hsl(210 40% 96.1%);
+  --color-accent-foreground: hsl(222 47% 11%);
+  
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+
+  --color-border: hsl(214 32% 91%);
+  --color-input: hsl(214 32% 91%);
+  --color-ring: hsl(222 84% 4.9%);
+ 
+  --radius: 0.75rem;
 }
 
-/* Khung nội dung chính: 900px ở giữa */
-.main-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 16px;
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(217,91%,60%,0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(280,91%,60%,0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(217,91%,60%,0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(280,91%,60%,0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
 }
 
-/* Card cho từng block nội dung */
-.card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
-  padding: 16px 18px;
-  margin-bottom: 16px;
-}
+@layer components {
+  /* Modern Fluent Card - Glassmorphism feel */
+  .card {
+    @apply relative overflow-hidden rounded-2xl border border-white/60 bg-white/70 p-6 shadow-sm backdrop-blur-xl transition-all duration-300 mb-6;
+    @apply hover:shadow-md hover:bg-white/80 hover:border-white/80;
+  }
 
-/* Tiêu đề card */
-.card-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
+  .card-title {
+    @apply text-xl font-semibold tracking-tight text-slate-900 mb-2;
+  }
 
-/* Phần mô tả nhỏ */
-.card-subtitle {
-  font-size: 13px;
-  color: #6b7280;
-}
+  .card-subtitle {
+    @apply text-sm text-slate-500 leading-relaxed;
+  }
 
-/* Label + input/select */
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 8px;
-}
+  /* Modern Fluent Input Fields */
+  .field {
+    @apply flex flex-col gap-1.5 mb-4;
+  }
 
-.field-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: #6b7280;
-}
+  .field-label {
+    @apply text-sm font-medium text-slate-600 ml-1;
+  }
 
-.field-input,
-.field-select {
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  padding: 6px 8px;
-  font-size: 13px;
-  background-color: #ffffff;
-  outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease,
-    background-color 0.15s ease;
-}
+  .field-input,
+  .field-select {
+    @apply w-full rounded-xl border border-slate-200 bg-white/50 px-4 py-2.5 text-sm shadow-sm transition-all duration-200;
+    @apply hover:bg-white hover:border-slate-300;
+    @apply focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10;
+    @apply disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-slate-100;
+  }
 
-.field-input:focus,
-.field-select:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
-  background-color: #f9fafb;
-}
+  .field-select {
+    @apply appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem] bg-[center_right_0.75rem] bg-no-repeat pr-10;
+  }
 
-/* Button – đã đẹp hơn trước */
-button {
-  border: none;
-  border-radius: 9999px;
-  background-color: #2563eb;
-  color: #ffffff;
-  padding: 6px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
-  transition: background-color 0.15s ease, transform 0.1s ease,
-    box-shadow 0.1s ease;
-}
+  /* Modern Fluent Button */
+  button:not([class*="bg-"]):not([class*="text-"]) {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm shadow-blue-600/20;
+    @apply transition-all duration-200 hover:bg-blue-700 hover:shadow-md hover:shadow-blue-600/30 hover:-translate-y-0.5;
+    @apply active:translate-y-0 active:shadow-sm;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+    @apply disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none;
+  }
 
-button:hover {
-  background-color: #1d4ed8;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
-}
+  /* List Items */
+  .session-list {
+    @apply list-none space-y-3 p-0 m-0;
+  }
 
-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
-}
+  .session-item {
+    @apply flex items-center justify-between gap-4 p-4 rounded-2xl border border-slate-100 bg-white/40 backdrop-blur-sm transition-all duration-200;
+    @apply hover:bg-white hover:shadow-md hover:border-slate-200 hover:-translate-y-0.5;
+  }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: default;
-  box-shadow: none;
-}
+  .session-status {
+    @apply text-xs font-medium text-slate-500;
+  }
 
-/* Danh sách buổi gần đây */
-.session-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.session-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  padding: 6px 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.session-item:last-child {
-  border-bottom: none;
-}
-
-.session-status {
-  color: #6b7280;
-  font-size: 11px;
-}
-/* ==== NAVBAR ==================================================== */
-
-.navbar {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-}
-
-.navbar-inner {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 8px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.navbar-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9999px;
-  background-color: #2563eb;
-  color: #ffffff;
-  font-size: 18px;
-}
-
-.navbar-title {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.navbar-subtitle {
-  font-size: 11px;
-  color: #6b7280;
-}
-
-.navbar-tabs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-}
-
-.navbar-tab {
-  padding: 4px 10px;
-  border-radius: 9999px;
-  text-decoration: none;
-  color: #4b5563;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-.navbar-tab:hover {
-  background-color: #e5e7eb;
-  color: #2563eb;
+  .main-container {
+    @apply max-w-3xl mx-auto p-4;
+  }
 }

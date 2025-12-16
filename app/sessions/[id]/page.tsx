@@ -97,22 +97,22 @@ export default async function SessionPage(props: any) {
             </p>
           )}
       {saved && (
-        <div className="mt-2 rounded-md bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+        <div className="mt-2 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 border border-emerald-100">
           ✅ Lưu thay đổi thành công
         </div>
       )} 
         </div>
-        <a href="/" className="text-xs text-blue-600 hover:underline">
+        <a href="/" className="text-xs font-medium text-blue-600 hover:underline">
           ← Về trang chính
         </a>
       </section>
         <section className="card space-y-3">
           <h2 className="card-title">Chỉnh sửa buổi</h2>
 
-          <form action={updateSessionAction} className="grid gap-2 md:grid-cols-2">
+          <form action={updateSessionAction} className="grid gap-4 md:grid-cols-2">
             <input type="hidden" name="sessionId" value={session.id} />
 
-            <label className="field max-w-[200px] ">
+            <label className="field max-w-[200px] mb-0">
               <span className="field-label">Ngày</span>
               <input
                 type="date"
@@ -138,7 +138,7 @@ export default async function SessionPage(props: any) {
               </select>
             </label> */}
 
-            <label className="field md:col-span-2">
+            <label className="field md:col-span-2 mb-0">
               <span className="field-label">Địa chỉ sân</span>
               <input
                 type="text"
@@ -149,7 +149,7 @@ export default async function SessionPage(props: any) {
               />
             </label>
 
-            <label className="field max-w-[200px]">
+            <label className="field max-w-[200px] mb-0">
               <span className="field-label">Tiền sân</span>
               <input
                 type="number"
@@ -159,7 +159,7 @@ export default async function SessionPage(props: any) {
               />
             </label>
 
-            <label className="field max-w-[200px]">
+            <label className="field max-w-[200px] mb-0">
               <span className="field-label">Tiền cầu</span>
               <input
                 type="number"
@@ -169,7 +169,7 @@ export default async function SessionPage(props: any) {
               />
             </label>
 
-            <label className="field max-w-[200px]">
+            <label className="field max-w-[200px] mb-0">
               <span className="field-label">Quỹ / nước</span>
               <input
                 type="number"
@@ -179,7 +179,7 @@ export default async function SessionPage(props: any) {
               />
             </label>
 
-            <label className="field md:col-span-2 max-w-[200px]">
+            <label className="field md:col-span-2 max-w-[200px] mb-0">
               <span className="field-label">Ghi chú</span>
                 <textarea
                   name="note"
@@ -190,7 +190,7 @@ export default async function SessionPage(props: any) {
                 />
             </label>
 
-            <div className="md:col-span-2 flex justify-end">
+            <div className="md:col-span-2 flex justify-end mt-2">
               <button type="submit">Lưu thay đổi</button>
             </div>
           </form>
@@ -243,118 +243,78 @@ export default async function SessionPage(props: any) {
                   className="field-input"
                 />
               </div>
-              <button
-                type="submit"
-                className="bg-white text-slate-800 border border-slate-300"
-              >
-                Thêm khách
-              </button>
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 text-white border border-blue-700 px-3 py-2 text-xs font-semibold shadow-sm hover:bg-blue-700 hover:shadow-md active:translate-y-0.5 transition-transform"
+                >
+                  Thêm khách
+                </button>
             </form>
           </div>
         </section>   
       )}
 
       {/* DANH SÁCH THAM GIA */}
-      <section className="card space-y-2">
-        <div className="flex items-center justify-between mb-1">
-          <h2 className="card-title">
-            Danh sách tham gia ({participants.length})
-          </h2>
+      <section className="card">
+        <div className="px-4 py-3">
+          <h2 className="card-title m-0">Danh sách tham gia ({participants.length})</h2>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs border border-slate-200 rounded-md overflow-hidden">
-            <thead className="bg-slate-50">
-              <tr className="text-left text-[11px] text-slate-500">
-                <th className="px-2 py-1">Tên</th>
-                <th className="px-2 py-1 text-right">Số tiền</th>
-                <th className="px-2 py-1 text-center">Đã đóng</th>
-                {canEdit && (
-                  <th className="px-2 py-1 text-center">Xóa</th>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {participants.map((p: any) => {
-                const name = p.isGuest
-                  ? `Khách: ${p.guestName}`
-                  : p.member?.name || 'N/A'
-                return (
-                  <tr
-                    key={p.id}
-                    className={`border-t border-slate-100 ${
-                      p.paid ? 'bg-emerald-50' : 'bg-white'
-                    }`}
-                  >
-                    <td className="px-2 py-1">{name}</td>
-                    <td className="px-2 py-1 text-right">
-                      {(p.customFee ?? 0).toLocaleString('vi-VN')}đ
-                    </td>
-                    <td className="px-2 py-1 text-center">
-                      <form
-                        action={togglePaidAction}
-                        className="inline-flex items-center gap-1"
-                      >
-                        <input
-                          type="hidden"
-                          name="sessionId"
-                          value={session.id}
-                        />
-                        <input
-                          type="hidden"
-                          name="participationId"
-                          value={p.id}
-                        />
-                        <input
-                          type="checkbox"
-                          name="paid"
-                          defaultChecked={p.paid}
-                        />
-                        <button
-                          type="submit"
-                          className="text-[10px] underline text-slate-500"
-                        >
-                          Lưu
-                        </button>
-                      </form>
-                    </td>
-                    {canEdit && (
-                      <td className="px-2 py-1 text-center">
-                        <form action={leaveSessionAction}>
-                          <input
-                            type="hidden"
-                            name="sessionId"
-                            value={session.id}
-                          />
-                          <input
-                            type="hidden"
-                            name="participationId"
-                            value={p.id}
-                          />
-                          <button
-                            type="submit"
-                            className="text-[10px] underline text-red-500 "
-                          >
-                            Xóa
-                          </button>
+        <div className="p-0 w-full overflow-auto">
+          <div className="min-w-full">
+            <table className="w-full text-sm border-t border-slate-200 table-fixed">
+              <thead className="bg-slate-50">
+                <tr className="text-left text-[12px] text-slate-500">
+                  <th className="px-3 py-2">Tên</th>
+                  <th className="px-3 py-2 text-right">Số tiền</th>
+                  <th className="px-3 py-2 text-center">Đã đóng</th>
+                  {canEdit && <th className="px-3 py-2 text-center">Xóa</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {participants.map((p: any) => {
+                  const name = p.isGuest ? `Khách: ${p.guestName}` : p.member?.name || 'N/A'
+                  return (
+                    <tr
+                      key={p.id}
+                      className={`border-t border-slate-100 even:bg-white odd:bg-slate-50 hover:bg-slate-100 transition-colors ${
+                        p.paid ? 'border-l-4 border-emerald-500 bg-emerald-50/60' : ''
+                      }`}
+                    >
+                      <td className="px-3 py-2 align-middle">{name}</td>
+                      <td className="px-3 py-2 text-right align-middle">
+                        {(p.customFee ?? 0).toLocaleString('vi-VN')}đ
+                      </td>
+                      <td className="px-3 py-2 text-center align-middle">
+                        <form action={togglePaidAction} className="inline-flex items-center gap-2">
+                          <input type="hidden" name="sessionId" value={session.id} />
+                          <input type="hidden" name="participationId" value={p.id} />
+                          <input type="checkbox" name="paid" defaultChecked={p.paid} className="w-4 h-4" />
+                          <button type="submit" className="text-[11px] underline text-slate-500">Lưu</button>
                         </form>
                       </td>
-                    )}
+                      {canEdit && (
+                        <td className="px-3 py-2 text-center align-middle">
+                          <form action={leaveSessionAction}>
+                            <input type="hidden" name="sessionId" value={session.id} />
+                            <input type="hidden" name="participationId" value={p.id} />
+                            <button type="submit" className="text-[11px] underline text-red-500">Xóa</button>
+                          </form>
+                        </td>
+                      )}
+                    </tr>
+                  )
+                })}
+                {!participants.length && (
+                  <tr>
+                    <td colSpan={canEdit ? 4 : 3} className="px-3 py-6 text-center text-slate-500">
+                      Chưa có ai tham gia.
+                    </td>
                   </tr>
-                )
-              })}
-              {!participants.length && (
-                <tr>
-                  <td
-                    colSpan={canEdit ? 4 : 3}
-                    className="px-2 py-3 text-center text-slate-500"
-                  >
-                    Chưa có ai tham gia.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -570,7 +530,7 @@ export default async function SessionPage(props: any) {
             <input type="hidden" name="sessionId" value={session.id} />
             <button
               type="submit"
-              className="bg-emerald-600 text-white"
+              className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700 hover:shadow-md active:translate-y-0.5 transition-transform"
             >
               Hoàn thành buổi đánh
             </button>
@@ -588,7 +548,7 @@ export default async function SessionPage(props: any) {
             />
             <button
               type="submit"
-              className="bg-red-600 text-white"
+              className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-red-700 hover:shadow-md active:translate-y-0.5 transition-transform"
             >
               Hủy buổi
             </button>
