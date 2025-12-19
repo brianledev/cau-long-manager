@@ -117,7 +117,7 @@ export default async function HomePage() {
             />
           </div>
 
-          <div className="flex items-end">
+          <div className="flex items-center">
             <button type="submit" className="h-[42px] w-full md:w-auto">Tạo buổi</button>
           </div>
         </form>
