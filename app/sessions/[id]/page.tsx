@@ -12,6 +12,8 @@ import {
 } from '@/app/actions'
 import { notFound } from 'next/navigation'
 import PassGate from '@/components/PassGate'
+import PaidToggle from '@/components/PaidToggle'
+
 
 
 const DEFAULT_BANK_ID = process.env.NEXT_PUBLIC_BANK_ID ?? 'MB'
@@ -258,6 +260,10 @@ export default async function SessionPage(props: any) {
       <section className="card">
         <div className="px-4 py-3">
           <h2 className="card-title m-0">Danh sách tham gia ({participants.length})</h2>
+          <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+            💡 Sau khi mọi người đã thanh toán, Host chỉ cần <b>tick vào checkbox</b> (dữ liệu sẽ <b>tự động lưu</b>),
+            rồi mới <b>Hoàn thành buổi</b> nhé.
+          </div>
         </div>
 
         <div className="p-0 w-full overflow-x-auto">
@@ -285,13 +291,21 @@ export default async function SessionPage(props: any) {
                       <td className="px-2 sm:px-3 py-2 text-right align-middle whitespace-nowrap">
                         {(p.customFee ?? 0).toLocaleString('vi-VN')}đ
                       </td>
-                      <td className="px-2 sm:px-3 py-2 text-center align-middle">
+                      {/* <td className="px-2 sm:px-3 py-2 text-center align-middle">
                         <form action={togglePaidAction} className="inline-flex items-center gap-1">
                           <input type="hidden" name="sessionId" value={session.id} />
                           <input type="hidden" name="participationId" value={p.id} />
                           <input type="checkbox" name="paid" defaultChecked={p.paid} className="w-4 h-4" />
                           <button type="submit" className="text-xs underline text-slate-500">Lưu</button>
                         </form>
+                      </td> */}
+                      <td className="px-2 sm:px-3 py-2 text-center align-middle">
+                        <PaidToggle
+                          sessionId={session.id}
+                          participationId={p.id}
+                          defaultChecked={p.paid}
+                          action={togglePaidAction}
+                        />
                       </td>
                       {canEdit && (
                         <td className="px-2 sm:px-3 py-2 text-center align-middle">
