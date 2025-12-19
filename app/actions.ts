@@ -199,13 +199,27 @@ export async function completeSessionAction(formData: FormData) {
   const sessionId = String(formData.get('sessionId') || '')
   if (!sessionId) return
 
-  await prisma.session.update({
-    where: { id: sessionId },
-    data: {
-      status: 'COMPLETED',
-      completedAt: new Date(),
-    },
-  })
+  await prisma.$transaction([
+    prisma.participation.updateMany({
+      where: { sessionId },
+      data: { paid: true },
+    }),
+    prisma.session.update({
+      where: { id: sessionId },
+      data: {
+        status: 'COMPLETED',
+        completedAt: new Date(),
+      },
+    }),
+  ])
+  
+  // await prisma.session.update({
+  //   where: { id: sessionId },
+  //   data: {
+  //     status: 'COMPLETED',
+  //     completedAt: new Date(),
+  //   },
+  // })
 
   revalidatePath('/')
   revalidatePath(`/sessions/${sessionId}`)

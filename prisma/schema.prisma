@@ -48,6 +48,7 @@ model Session {
   completedAt DateTime?
 
   participations Participation[]
+  passcode     String   @default("")  // <-- security code
 }
 
 model Participation {
