@@ -28,7 +28,7 @@ export default async function HomePage() {
     <div className="main-container">
       {/* HERO */}
       <section className="card">
-        <h1 className="text-2xl font-bold tracking-tight mb-2 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent dark:from-blue-400 dark:to-cyan-300">Quản lý cầu lông</h1>
+        <h1 className="text-2xl font-bold tracking-tight mb-2 bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent dark:from-blue-400 dark:to-cyan-300">Quản lý cầu lông</h1>
         <p className="card-subtitle">
           Tạo buổi mới, host luân phiên, chia tiền, lưu lịch sử cho cả nhóm.
         </p>
@@ -59,7 +59,14 @@ export default async function HomePage() {
               className="field-input"
             />
           </div>
-
+          <label className="field">
+            <span className="field-label">Mật khẩu buổi (tuỳ chọn)</span>
+            <input
+              name="passcode"
+              className="field-input"
+              placeholder="VD: 123456 (để trống => ai cũng vào được)"
+            />
+          </label>
           <div className="field max-w-[200px]">
             <span className="field-label">Host (optional)</span>
             <select
@@ -158,7 +165,7 @@ export default async function HomePage() {
                     </div>
                     {s.courtAddress && (
                       <div className="flex items-start gap-1.5 text-[11px] text-slate-600">
-                        <svg className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="h-3.5 w-3.5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
@@ -231,7 +238,7 @@ export default async function HomePage() {
                     </div>
                     {s.courtAddress && (
                       <div className="flex items-start gap-1.5 text-[11px] text-slate-600">
-                        <svg className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="h-3.5 w-3.5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>

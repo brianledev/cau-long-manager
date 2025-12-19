@@ -4,6 +4,7 @@
 import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 
 
 // Tính tiền mỗi người, làm tròn lên 1.000
@@ -54,9 +55,13 @@ export async function createSessionAction(formData: FormData) {
   const fundFee = Number(formData.get('fundFee') || 0)
 //  lấy thêm địa chỉ sân
   const courtAddressRaw = String(formData.get('courtAddress') ?? '').trim()
-  const courtAddress = courtAddressRaw || null
-  
+  const courtAddress = courtAddressRaw || null  
   const date = dateStr ? new Date(dateStr) : new Date()
+
+  // lấy thêm passcode (mã truy cập) nếu có
+  const passcodeRaw = String(formData.get('passcode') ?? '').trim()
+  const passcode = passcodeRaw ? passcodeRaw : undefined
+
 
   await prisma.session.create({
     data: {
@@ -66,6 +71,7 @@ export async function createSessionAction(formData: FormData) {
       shuttleFee,
       fundFee,
       courtAddress,
+      passcode,
     },
   })
 
@@ -288,4 +294,46 @@ if (sessionId) {
 // ✅ bắt Next “tải lại” trang hiện tại ngay
 // redirect(`/sessions/${sessionId}?saved=1`)
 
+}
+
+export async function verifySessionPasscodeAction(formData: FormData) {
+  // Lấy sessionId và passcode từ form
+  const sessionId = String(formData.get('sessionId') || '')
+  const passcode = String(formData.get('passcode') || '').trim()
+
+  // Lấy passcode của buổi từ database
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+    select: { passcode: true },
+  })
+
+  const real = (session?.passcode ?? '').trim()
+
+  // Buổi không có passcode => cho vào luôn và set cookie truy cập
+  if (!real) {
+    const cookieStore = await cookies()
+    cookieStore.set(`session_access_${sessionId}`, '1', {
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30,
+    })
+    redirect(`/sessions/${sessionId}`)
+  }
+
+  // Buổi có passcode => kiểm tra passcode nhập vào
+  if (!passcode || passcode !== real) {
+    redirect(`/sessions/${sessionId}?err=1`)
+  }
+
+  // Passcode đúng => set cookie truy cập
+  const cookieStore = await cookies()
+  cookieStore.set(`session_access_${sessionId}`, '1', {
+    httpOnly: true,
+    sameSite: 'lax',
+    path: '/',
+    // maxAge: 60 * 60 * 24 * 30,
+  })
+
+  redirect(`/sessions/${sessionId}`)
 }

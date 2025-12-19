@@ -61,7 +61,7 @@ export default async function MembersPage() {
     //<PassGate>
     <div className="main-container space-y-4">
       <section className="card">
-        <h1 className="card-title text-xl bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent dark:from-slate-100 dark:to-slate-300">Thành viên</h1>
+        <h1 className="card-title text-xl bg-linear-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent dark:from-slate-100 dark:to-slate-300">Thành viên</h1>
         <p className="card-subtitle">
           Quản lý danh sách thành viên và trạng thái hoạt động trong nhóm cầu
           lông.

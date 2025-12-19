@@ -13,6 +13,8 @@ import {
 import { notFound } from 'next/navigation'
 import PassGate from '@/components/PassGate'
 import PaidToggle from '@/components/PaidToggle'
+import { cookies } from 'next/headers'
+import { verifySessionPasscodeAction } from '@/app/actions'
 
 
 
@@ -43,11 +45,49 @@ export default async function SessionPage(props: any) {
 
   if (!session) return notFound()
 
+  const needPass = !!session.passcode && session.passcode.trim() !== ''
+  const cookieStore = await cookies()   // ✅ BẮT BUỘC await
+  const access = cookieStore.get(`session_access_${id}`)?.value === '1'
+
+  if (needPass && !access) {
+    const err = searchParams?.err === '1'
+
+    return (
+      <div className="main-container space-y-4">
+        <section className="card">
+          <h1 className="card-title">Buổi này có đặt mật khẩu</h1>
+          <p className="card-subtitle">Nhập đúng mật khẩu để tiếp tục.</p>
+
+          {err && (
+            <div className="mt-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-700">
+              ❌ Mật khẩu sai, thử lại nhé.
+            </div>
+          )}
+
+          <form action={verifySessionPasscodeAction} className="mt-4 grid gap-3 max-w-sm">
+            <input type="hidden" name="sessionId" value={id} />
+            <label className="field">
+              <span className="field-label">Mật khẩu buổi</span>
+              <input name="passcode" className="field-input" placeholder="VD: 123456" />
+            </label>
+            <button type="submit">Vào buổi</button>
+          </form>
+
+          <a href="/" className="mt-3 inline-block text-xs font-medium text-blue-600 hover:underline">
+            ← Về trang chính
+          </a>
+        </section>
+      </div>
+    )
+  }
+
   const members = await prisma.member.findMany({
     where: { active: true },
     orderBy: { createdAt: 'asc' },
   })
 
+
+  
   const participants = session.participations
   const perFee = participants.length ? participants[0].customFee ?? 0 : 0
 
@@ -60,6 +100,7 @@ export default async function SessionPage(props: any) {
 
   const totalAmount = session.totalAmount ?? 0
   const canEdit = session.status === 'PLANNED'
+  const canQR = ['PLANNED', 'COMPLETED'].includes(session.status)
   const inputCls = 'input w-full'
   const selectCls = 'select w-full'
   const btnPrimary = 'btn btn-primary'
@@ -122,7 +163,7 @@ export default async function SessionPage(props: any) {
                 defaultValue={new Date(session.date).toISOString().slice(0, 10)}
                 className="field-input"
               />
-            </label>
+            </label>            
 
             <label className="field max-w-60">
               <span className="field-label">Host</span>
@@ -333,7 +374,7 @@ export default async function SessionPage(props: any) {
       </section>
 
       {/* FORM "TÍNH TIỀN" */}
-      {canEdit && (
+      {canQR && (
         <>        
         <section className="card space-y-3 text-sm">
           <h2 className="card-title">Tính tiền</h2>
