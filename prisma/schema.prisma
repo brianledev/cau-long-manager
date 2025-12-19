@@ -15,11 +15,24 @@ enum SessionStatus {
   CANCELED
 }
 
+// new group member
+model Group {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+
+  members   Member[]
+}
+
+
 model Member {
   id        String   @id @default(cuid())
   name      String
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
+
+  groupId   String?  // nullable = NON GROUP
+  group     Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
 
   participations Participation[]
   hostedSessions Session[] @relation("HostSessions")

@@ -1,8 +1,6 @@
 // app/sessions/[id]/page.tsx
 import { prisma } from '@/lib/db'
 import {
-  joinSessionAction,
-  joinGuestAction,
   leaveSessionAction,
   calculateFeeAction,
   togglePaidAction,
@@ -13,6 +11,7 @@ import {
 import { notFound } from 'next/navigation'
 import PassGate from '@/components/PassGate'
 import PaidToggle from '@/components/PaidToggle'
+import JoinSessionForm from '@/components/JoinSessionForm'
 import { cookies } from 'next/headers'
 import { verifySessionPasscodeAction } from '@/app/actions'
 
@@ -32,16 +31,21 @@ export default async function SessionPage(props: any) {
     throw new Error('Missing session id')
   }
 
-  const session = await prisma.session.findUnique({
-    where: { id },
-    include: {
-      host: true,
-      participations: {
-        include: { member: true },
-        orderBy: { id: 'asc' },
+  const [session, groups] = await Promise.all([
+    prisma.session.findUnique({
+      where: { id },
+      include: {
+        host: true,
+        participations: {
+          include: { member: true },
+          orderBy: { id: 'asc' },
+        },
       },
-    },
-  })
+    }),
+    prisma.group.findMany({
+      orderBy: { createdAt: 'asc' },
+    }),
+  ])
 
   if (!session) return notFound()
 
@@ -244,57 +248,11 @@ export default async function SessionPage(props: any) {
         <section className="card space-y-3 text-sm">
           <h2 className="card-title">Tham gia buổi này</h2>
           <p className="card-subtitle">
-            Thành viên tự chọn tên mình hoặc host thêm khách vãng lai.
+            Thành viên chọn nhóm rồi chọn tên mình, hoặc nhập tên khách vãng lai.
           </p>
 
-          <div className="grid gap-3 md:grid-cols-2">
-            {/* Join as member */}
-            <form
-              action={joinSessionAction}
-              className="flex flex-col gap-2 md:flex-row md:items-center"
-            >
-              <input type="hidden" name="sessionId" value={session.id} />
-              <div className="field md:flex-1">
-                <span className="field-label">Chọn tên</span>
-                <select
-                  name="memberId"
-                  className="field-select"
-                  defaultValue=""
-                >
-                  <option value="">-- Chọn tên --</option>
-                  {members.map((m: any) => (
-                    <option key={m.id} value={m.id}>
-                      {m.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <button type="submit">Tham gia</button>
-            </form>
-
-            {/* Join as guest */}
-            <form
-              action={joinGuestAction}
-              className="flex flex-col gap-2 md:flex-row md:items-center"
-            >
-              <input type="hidden" name="sessionId" value={session.id} />
-              <div className="field md:flex-1">
-                <span className="field-label">Khách vãng lai</span>
-                <input
-                  name="guestName"
-                  placeholder="Tên khách vãng lai"
-                  className="field-input"
-                />
-              </div>
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 text-white border border-blue-700 px-3 py-2 text-xs font-semibold shadow-sm hover:bg-blue-700 hover:shadow-md active:translate-y-0.5 transition-transform"
-                >
-                  Thêm khách
-                </button>
-            </form>
-          </div>
-        </section>   
+          <JoinSessionForm sessionId={session.id} members={members} groups={groups} />
+        </section>
       )}
 
       {/* DANH SÁCH THAM GIA */}

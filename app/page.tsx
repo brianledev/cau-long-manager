@@ -1,25 +1,30 @@
 // app/page.tsx
 import { prisma } from '@/lib/db'
-import { createSessionAction } from '@/app/actions'
+import CreateSessionForm from '@/components/CreateSessionForm'
 import PassGate from '@/components/PassGate'
 
 export default async function HomePage() {
   const today = new Date()
   const todayStr = today.toISOString().slice(0, 10)
 
-  const [members, openSessions, recentSessions] = await Promise.all([
-    prisma.member.findMany({
+  const [groups, allMembers, openSessions, recentSessions] = await Promise.all([
+    prisma.group.findMany({
       orderBy: { createdAt: 'asc' },
+    }),
+    prisma.member.findMany({
+      where: { active: true },
+      orderBy: { createdAt: 'asc' },
+      select: { id: true, name: true, groupId: true },
     }),
     prisma.session.findMany({
       where: { status: 'PLANNED' },
       orderBy: { date: 'asc' },
-      include: { host: true }, // Chi tiet host
+      include: { host: true },
     }),
     prisma.session.findMany({
       orderBy: { date: 'desc' },
       take: 8,
-      include: { host: true }, 
+      include: { host: true },
     }),
   ])
 
@@ -42,92 +47,15 @@ export default async function HomePage() {
             <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
             </svg>
-            {members.length} thành viên
+            {allMembers.length} thành viên
           </span>
         </div>
 
-        <form
-          action={createSessionAction}
-          className="grid gap-4 md:grid-cols-2"
-        >
-          <div className="field max-w-[200px]">
-            <span className="field-label">Ngày</span>
-            <input
-              type="date"
-              name="date"
-              defaultValue={todayStr}
-              className="field-input"
-            />
-          </div>
-          <label className="field">
-            <span className="field-label">Mật khẩu buổi (tuỳ chọn)</span>
-            <input
-              name="passcode"
-              className="field-input"
-              placeholder="VD: 123456 (để trống => ai cũng vào được)"
-            />
-          </label>
-          <div className="field max-w-[200px]">
-            <span className="field-label">Host (optional)</span>
-            <select
-              name="hostId"
-              defaultValue=""
-              className="field-select"
-            >
-              <option value="">-- Chọn host --</option>
-              {members.map((m: any) => (
-                <option key={m.id} value={m.id}>
-                  {m.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-           {/* ĐỊA CHỈ SÂN CẦU */}
-          <div className="field md:col-span-2">
-            <span className="field-label">Địa chỉ sân cầu / Ngày giờ</span>
-            <input
-              type="text"
-              name="courtAddress"
-              placeholder="Ví dụ: 17:30 ~ 19:30 Sân ABC, 123 Lê Lợi, Q.1"
-              className="field-input"
-            />
-          </div>         
-
-          <div className="field max-w-[200px]">
-            <span className="field-label">Tiền sân</span>
-            <input
-              type="number"
-              name="courtFee"
-              defaultValue={0}
-              className="field-input"
-            />
-          </div>
-
-          <div className="field max-w-[200px]">
-            <span className="field-label">Tiền cầu</span>
-            <input
-              type="number"
-              name="shuttleFee"
-              defaultValue={0}
-              className="field-input"
-            />
-          </div>
-
-          <div className="field max-w-[200px]">
-            <span className="field-label">Tiền quỹ / nước</span>
-            <input
-              type="number"
-              name="fundFee"
-              defaultValue={0}
-              className="field-input"
-            />
-          </div>
-
-          <div className="flex items-center">
-            <button type="submit" className="h-[42px] w-full md:w-auto">Tạo buổi</button>
-          </div>
-        </form>
+        <CreateSessionForm
+          groups={groups}
+          allMembers={allMembers}
+          todayStr={todayStr}
+        />
       </section>
 
       {/* BUỔI ĐANG MỞ */}

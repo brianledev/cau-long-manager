@@ -14,6 +14,58 @@ function calcPerPersonFee(totalAmount: number, count: number) {
   return Math.floor(totalAmount / count)
 }
 
+/* ========= GROUP ========= */
+
+export async function createGroupAction(formData: FormData) {
+  const name = String(formData.get('name') || '').trim()
+  if (!name) return
+
+  await prisma.group.create({
+    data: { name },
+  })
+
+  revalidatePath('/members')
+}
+
+export async function updateMemberGroupAction(formData: FormData) {
+  const memberId = String(formData.get('memberId') || '')
+  const groupId = String(formData.get('groupId') || '') || null
+
+  if (!memberId) return
+
+  await prisma.member.update({
+    where: { id: memberId },
+    data: { groupId },
+  })
+
+  revalidatePath('/members')
+}
+
+export async function updateMemberGroupsBulkAction(formData: FormData) {
+  // Get all entries that start with "group_"
+  const updates: { memberId: string; groupId: string | null }[] = []
+
+  for (const [key, value] of formData.entries()) {
+    if (key.startsWith('group_')) {
+      const memberId = key.replace('group_', '')
+      const groupId = String(value || '') || null
+      updates.push({ memberId, groupId })
+    }
+  }
+
+  // Bulk update all members
+  await prisma.$transaction(
+    updates.map((u) =>
+      prisma.member.update({
+        where: { id: u.memberId },
+        data: { groupId: u.groupId },
+      })
+    )
+  )
+
+  revalidatePath('/members')
+}
+
 /* ========= MEMBER ========= */
 
 export async function createMemberAction(formData: FormData) {
@@ -336,4 +388,52 @@ export async function verifySessionPasscodeAction(formData: FormData) {
   })
 
   redirect(`/sessions/${sessionId}`)
+}
+
+/* ========= NEW GROUP & MEMBER ACTIONS ========= */
+
+export async function deleteGroupAction(formData: FormData) {
+  const groupId = formData.get('groupId') as string
+  
+  await prisma.group.delete({
+    where: { id: groupId },
+  })
+  
+  revalidatePath('/members')
+  redirect('/members')
+}
+
+export async function updateGroupAction(formData: FormData) {
+  const groupId = formData.get('groupId') as string
+  const name = formData.get('name') as string
+  
+  await prisma.group.update({
+    where: { id: groupId },
+    data: { name },
+  })
+  
+  revalidatePath('/members')
+}
+
+export async function deleteMemberAction(formData: FormData) {
+  const memberId = formData.get('memberId') as string
+  
+  await prisma.member.delete({
+    where: { id: memberId },
+  })
+  
+  revalidatePath('/members')
+}
+
+export async function updateMemberAction(formData: FormData) {
+  const memberId = formData.get('memberId') as string
+  const name = formData.get('name') as string
+  const active = formData.get('active') === 'true'
+  
+  await prisma.member.update({
+    where: { id: memberId },
+    data: { name, active },
+  })
+  
+  revalidatePath('/members')
 }

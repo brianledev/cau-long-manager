@@ -1,46 +1,80 @@
 // app/stats/page.tsx
 import { prisma } from '@/lib/db'
 
-export default async function StatsPage() {
+export default async function StatsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ group?: string }>
+}) {
+  const params = await searchParams
+  const selectedGroupId = params?.group
+
   const now = new Date()
   const monthAgo = new Date()
   monthAgo.setMonth(now.getMonth() - 1)
 
-  const [sessions, participations] = await Promise.all([
+  // Lấy group filter members
+  const filterMemberIds = await prisma.member.findMany({
+    where:
+      selectedGroupId === '__non_group__'
+        ? { groupId: null }
+        : selectedGroupId
+          ? { groupId: selectedGroupId }
+          : undefined,
+    select: { id: true },
+  })
+  const memberIds = filterMemberIds.map((m) => m.id)
+
+  const [sessions, groups, allMembers, participations, nonGroupMembersCount] = await Promise.all([
     prisma.session.findMany(),
+    prisma.group.findMany({
+      orderBy: { createdAt: 'asc' },
+    }),
+    prisma.member.findMany({
+      where:
+        selectedGroupId === '__non_group__'
+          ? { groupId: null }
+          : selectedGroupId
+            ? { groupId: selectedGroupId }
+            : undefined,
+      select: { id: true, name: true },
+    }),
     prisma.participation.findMany({
-      where: {
-        isGuest: false,
-        memberId: { not: null },
-      },
+      where:
+        memberIds.length > 0
+          ? {
+              isGuest: false,
+              memberId: { in: memberIds },
+            }
+          : {
+              isGuest: false,
+              memberId: { not: null },
+            },
       include: {
         member: true,
         session: true,
       },
     }),
+    // Đếm số members không có group
+    prisma.member.count({ where: { groupId: null } }),
   ])
 
-  const totalSessions = sessions.length
-  const completedSessions = sessions.filter(
-    (s) => s.status === 'COMPLETED',
-  ).length
+  // Lấy session IDs từ participations đã filter (để tính số buổi theo group)
+  const groupSessionIds = new Set(
+    participations
+      .filter((p: any) => p.session?.status === 'COMPLETED')
+      .map((p: any) => p.session.id)
+  )
+  
+  const totalSessions = selectedGroupId ? groupSessionIds.size : sessions.length
+  const completedSessions = selectedGroupId 
+    ? groupSessionIds.size 
+    : sessions.filter((s: any) => s.status === 'COMPLETED').length
 
-  const totalCourt = sessions.reduce(
-    (sum, s) => sum + (s.courtFee ?? 0),
-    0,
-  )
-  const totalShuttle = sessions.reduce(
-    (sum, s) => sum + (s.shuttleFee ?? 0),
-    0,
-  )
-  const totalFund = sessions.reduce(
-    (sum, s) => sum + (s.fundFee ?? 0),
-    0,
-  )
-  const totalCharged = sessions.reduce(
-    (sum, s) => sum + (s.totalAmount ?? 0),
-    0,
-  )
+  // Tính tổng chi phí từ participations đã filter theo group
+  const totalMembersPaid = participations
+    .filter((p: any) => p.session?.status === 'COMPLETED')
+    .reduce((sum: number, p: any) => sum + (p.customFee ?? 0), 0)
 
   type MemberAgg = {
     id: string
@@ -108,6 +142,13 @@ export default async function StatsPage() {
     ' - ' +
     now.toLocaleDateString('vi-VN')
 
+  // Tên group hiện tại đang filter
+  const groupLabel = selectedGroupId === '__non_group__'
+    ? 'NON GROUP'
+    : selectedGroupId
+      ? groups.find((g: any) => g.id === selectedGroupId)?.name || 'Nhóm không xác định'
+      : 'Tất cả'
+
   return (
     <div className="main-container space-y-4">
       <div className="card">
@@ -116,6 +157,48 @@ export default async function StatsPage() {
           Tổng quan buổi đánh, người đi chăm, tổng tiền đã chia.
         </p>
       </div>
+
+      {/* GROUP FILTER */}
+      <section className="card">
+        <label className="field-label mb-2">Chọn nhóm để xem thống kê</label>
+        <div className="flex flex-wrap gap-2">
+          <a
+            href="/stats"
+            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+              !selectedGroupId
+                ? 'bg-blue-600 text-white ring-2 ring-blue-600'
+                : 'bg-slate-100 text-slate-700 ring-1 ring-slate-200 hover:bg-slate-200'
+            }`}
+          >
+            Tất cả
+          </a>
+          {groups.map((group: any) => (
+            <a
+              key={group.id}
+              href={`/stats?group=${group.id}`}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                selectedGroupId === group.id
+                  ? 'bg-blue-600 text-white ring-2 ring-blue-600'
+                  : 'bg-slate-100 text-slate-700 ring-1 ring-slate-200 hover:bg-slate-200'
+              }`}
+            >
+              {group.name}
+            </a>
+          ))}
+          {nonGroupMembersCount > 0 && (
+            <a
+              href="/stats?group=__non_group__"
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                selectedGroupId === '__non_group__'
+                  ? 'bg-blue-600 text-white ring-2 ring-blue-600'
+                  : 'bg-slate-100 text-slate-700 ring-1 ring-slate-200 hover:bg-slate-200'
+              }`}
+            >
+              NON GROUP
+            </a>
+          )}
+        </div>
+      </section>
 
       {/* TỔNG QUAN */}
       <section className="grid gap-4 md:grid-cols-3">
@@ -142,20 +225,14 @@ export default async function StatsPage() {
           <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-emerald-200/30"></div>
           <div className="relative space-y-2">
             <div className="flex items-center gap-2 text-xs font-medium text-emerald-600">
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
               </svg>
-              Tổng chi phí
+              Tổng chi phí đã chia
             </div>
-            <div className="text-2xl font-bold text-emerald-700">
-              {totalCharged.toLocaleString('vi-VN')}đ
-            </div>
-            <div className="flex flex-wrap gap-x-2 text-[11px] text-emerald-600">
-              <span>Sân: {totalCourt.toLocaleString('vi-VN')}đ</span>
-              <span>·</span>
-              <span>Cầu: {totalShuttle.toLocaleString('vi-VN')}đ</span>
-              <span>·</span>
-              <span>Quỹ: {totalFund.toLocaleString('vi-VN')}đ</span>
+            <div className="text-2xl font-bold text-emerald-700 truncate">{totalMembersPaid.toLocaleString('vi-VN')}đ</div>
+            <div className="text-[11px] text-emerald-600">
+              Thành viên trong [{groupLabel}]
             </div>
           </div>
         </div>
@@ -170,9 +247,9 @@ export default async function StatsPage() {
                 </svg>
                 Đi chăm nhất
               </div>
-              <div className="text-2xl font-bold text-amber-700">{topAll.name}</div>
-              <div className="text-[11px] text-amber-600">
-                {topAll.sessions} buổi · đã chia {(topAll.totalPaid || 0).toLocaleString('vi-VN')}đ
+              <div className="text-xl font-bold text-amber-700 truncate">{topAll.name}</div>
+              <div className="text-[11px] text-amber-600 truncate">
+                {topAll.sessions} buổi · {(topAll.totalPaid || 0).toLocaleString('vi-VN')}đ
               </div>
             </div>
           </div>
@@ -182,7 +259,7 @@ export default async function StatsPage() {
       {/* TOP 30 NGÀY GẦN NHẤT */}
       <section className="card space-y-3">
         <h2 className="card-title text-base">
-          Top tham gia {monthLabel}
+          Top tham gia [{groupLabel}] · {monthLabel}
         </h2>
         {monthStats.length ? (
           <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
@@ -229,7 +306,7 @@ export default async function StatsPage() {
       {/* BẢNG ALL TIME */}
       <section className="card space-y-3">
         <h2 className="card-title text-base">
-          Thống kê theo thành viên (all time)
+          Thống kê [{groupLabel}] · all time
         </h2>
         {allTimeStats.length ? (
           <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
