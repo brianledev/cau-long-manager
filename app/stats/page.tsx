@@ -1,3 +1,7 @@
+import { TopName } from '@/components/TopName'
+import { getTopNMemberIds } from '@/lib/topMembers'
+  // ...existing code...
+  // ...existing code...
 // app/stats/page.tsx
 import { prisma } from '@/lib/db'
 
@@ -59,6 +63,7 @@ export default async function StatsPage({
     prisma.member.count({ where: { groupId: null } }),
   ])
 
+  const top3Ids = getTopNMemberIds(allMembers, participations, 3)
   // Lấy session IDs từ participations đã filter (để tính số buổi theo group)
   const groupSessionIds = new Set(
     participations
@@ -283,7 +288,10 @@ export default async function StatsPage({
                             {idx === 0 ? '🥇' : idx === 1 ? '🥈' : '🥉'}
                           </span>
                         )}
-                        <span className="font-medium text-slate-900">{row.name}</span>
+                        {idx < 3
+                          ? <TopName rank={idx + 1}>{row.name}</TopName>
+                          : <span className="font-medium text-slate-900">{row.name}</span>
+                        }
                       </div>
                     </td>
                     <td className="px-4 py-3 text-right">

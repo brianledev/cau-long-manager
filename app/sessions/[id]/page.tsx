@@ -1,3 +1,5 @@
+import { TopName } from '@/components/TopName'
+import { getGlobalTop3 } from '@/lib/getGlobalTop3'
 // app/sessions/[id]/page.tsx
 import { prisma } from '@/lib/db'
 import {
@@ -46,6 +48,11 @@ export default async function SessionPage(props: any) {
       orderBy: { createdAt: 'asc' },
     }),
   ])
+
+  // Lấy tất cả member và participation để xác định top
+  const allMembers = await prisma.member.findMany({ select: { id: true, name: true } })
+  const participations = await prisma.participation.findMany({ where: { isGuest: false } })
+  const globalTop3Ids = await getGlobalTop3();
 
   if (!session) return notFound()
 
@@ -112,7 +119,8 @@ export default async function SessionPage(props: any) {
   return (
     // <PassGate>
 
-    <div className="main-container space-y-4">    
+    <div className="main-container space-y-4">
+      {/* Đã xoá Top thành viên theo yêu cầu */}
       {/* HEADER */}
       <section className="card flex items-start justify-between gap-4">
         <div>
@@ -279,6 +287,7 @@ export default async function SessionPage(props: any) {
               <tbody>
                 {participants.map((p: any) => {
                   const name = p.isGuest ? `Khách: ${p.guestName}` : p.member?.name || 'N/A'
+                  const isTop = !p.isGuest && p.member && globalTop3Ids.includes(p.member.id);
                   return (
                     <tr
                       key={p.id}
@@ -286,7 +295,13 @@ export default async function SessionPage(props: any) {
                         p.paid ? 'border-l-4 border-emerald-500 bg-emerald-50/60' : ''
                       }`}
                     >
-                      <td className="px-2 sm:px-3 py-2 align-middle whitespace-nowrap">{name}</td>
+                      <td className="px-2 sm:px-3 py-2 align-middle whitespace-nowrap">
+                        {isTop ? (
+                          <TopName rank={globalTop3Ids.indexOf(p.member.id) + 1}>{name}</TopName>
+                        ) : (
+                          name
+                        )}
+                      </td>
                       <td className="px-2 sm:px-3 py-2 text-right align-middle whitespace-nowrap">
                         {(p.customFee ?? 0).toLocaleString('vi-VN')}đ
                       </td>

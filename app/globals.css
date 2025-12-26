@@ -1,3 +1,122 @@
+/* Gradient động cho từng top */
+/* Top 1: Cam ánh đỏ rực rỡ */
+.top1-gradient {
+  background: linear-gradient(270deg, #ff9100, #ff6d00, #ff3d00, #ff1744, #ff9100, #ff1744);
+  background-size: 400% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: goldMove 2.2s cubic-bezier(0.4,0,0.2,1) infinite;
+  will-change: background-position;
+}
+/* Top 2: Lam tím ánh bạc */
+.top2-gradient {
+  background: linear-gradient(135deg, #e0e7ff, #a5b4fc, #818cf8, #6366f1, #a21caf, #e0e7ff);
+  background-size: 350% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: silverMove 3.1s steps(60, end) infinite;
+  will-change: background-position;
+}
+/* Top 3: Đỏ đồng ánh tím */
+.top3-gradient {
+  background: linear-gradient(315deg, #b87333, #f87171, #be185d, #a21caf, #b87333, #be185d);
+  background-size: 500% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: bronzeMove 2.6s ease-in-out infinite;
+  will-change: background-position;
+}
+@keyframes goldMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+@keyframes silverMove {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes bronzeMove {
+  0% { background-position: 50% 0%; }
+  100% { background-position: 100% 100%; }
+}
+/* Rainbow HSL gradient animation for TopName - đảm bảo hiệu ứng động luôn hoạt động */
+
+/* Rainbow HSL gradient animation for TopName - loại bỏ xanh lá */
+
+
+
+/* Rainbow HSL gradient animation for TopName - chỉ đỏ, xanh dương, tím, không vàng/xanh lá, luôn có animation */
+.rainbow-hsl-text {
+  background: linear-gradient(
+    90deg,
+    hsl(0, 100%, 50%),   /* đỏ */
+    hsl(220, 100%, 55%), /* xanh dương sáng */
+    hsl(240, 100%, 50%), /* xanh dương đậm */
+    hsl(275, 100%, 60%), /* tím xanh */
+    hsl(300, 80%, 60%),  /* tím */
+    hsl(320, 80%, 60%),  /* tím hồng */
+    hsl(360, 100%, 50%)  /* đỏ */
+  );
+  background-size: 400% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow-hsl-move 3s linear infinite;
+  will-change: background-position;
+}
+.rainbow-hsl-text {
+  background: linear-gradient(
+    90deg,
+    hsl(0, 100%, 50%),   /* đỏ */
+    hsl(220, 100%, 55%), /* xanh dương sáng */
+    hsl(240, 100%, 50%), /* xanh dương đậm */
+    hsl(275, 100%, 60%), /* tím xanh */
+    hsl(300, 80%, 60%),  /* tím */
+    hsl(320, 80%, 60%),  /* tím hồng */
+    hsl(360, 100%, 50%)  /* đỏ */
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: rainbow-hsl-move 3s linear infinite !important;
+  will-change: background-position;
+}
+
+@keyframes rainbow-hsl-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+/* Rainbow HSL gradient animation for TopName */
+
+/* Rainbow HSL gradient animation for TopName - loại bỏ xanh lá */
+
+
+/* Rainbow HSL gradient animation for TopName - chỉ đỏ, xanh dương, tím, không vàng */
+.rainbow-hsl-text {
+  background: linear-gradient(
+    90deg,
+    hsl(0, 100%, 50%),   /* đỏ */
+    hsl(220, 100%, 55%), /* xanh dương sáng */
+    hsl(240, 100%, 50%), /* xanh dương đậm */
+    hsl(275, 100%, 60%), /* tím xanh */
+    hsl(300, 80%, 60%),  /* tím */
+    hsl(320, 80%, 60%),  /* tím hồng */
+    hsl(360, 100%, 50%)  /* đỏ */
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: rainbow-hsl-move 3s linear infinite;
+}
+@keyframes rainbow-hsl-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
 @import "tailwindcss";
 
 @theme {

@@ -1,0 +1,955 @@
+{
+  "members": [
+    {
+      "id": "cmizksucj0002kw04hagricdc",
+      "name": "AnLVT",
+      "active": true,
+      "createdAt": "2025-12-10T05:35:46.340Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizkt3ou0003kw04f7zvozld",
+      "name": "DatNT56",
+      "active": true,
+      "createdAt": "2025-12-10T05:35:58.278Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizkt7bb0004kw04qkm5h8ar",
+      "name": "TienLD6 ( Pinky )",
+      "active": true,
+      "createdAt": "2025-12-10T05:36:03.144Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizktb2l0005kw04tno12rdh",
+      "name": "TienNM4",
+      "active": true,
+      "createdAt": "2025-12-10T05:36:08.013Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizktn7k0006kw045cxvhmnl",
+      "name": "DaoTTT6",
+      "active": true,
+      "createdAt": "2025-12-10T05:36:23.656Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizktxsz0007kw046nbqu4pq",
+      "name": "TienPV15",
+      "active": true,
+      "createdAt": "2025-12-10T05:36:37.476Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizkvvr60008kw0451dj1dyy",
+      "name": "HaiTT53",
+      "active": true,
+      "createdAt": "2025-12-10T05:38:08.037Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizldwuz0000k304wyaogx5c",
+      "name": "KhanhVT4",
+      "active": true,
+      "createdAt": "2025-12-10T05:52:09.369Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizlmjvt0002le046v9zxb6o",
+      "name": "HoangNN21",
+      "active": true,
+      "createdAt": "2025-12-10T05:58:52.334Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizlvrrx0003le049mogz1i1",
+      "name": "KetPV",
+      "active": false,
+      "createdAt": "2025-12-10T06:06:02.504Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizlyod60004le04s3knqc0p",
+      "name": "PhuongDN4",
+      "active": false,
+      "createdAt": "2025-12-10T06:08:18.048Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizp4pk20000gt04frbvzxyc",
+      "name": "LocNH34",
+      "active": true,
+      "createdAt": "2025-12-10T07:36:58.464Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizkivzt0000zlfl13zcaqxx",
+      "name": "AnLB",
+      "active": true,
+      "createdAt": "2025-12-10T05:28:01.914Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizkrbnx0000jp04e2vd24h4",
+      "name": "Richard",
+      "active": true,
+      "createdAt": "2025-12-10T05:34:35.467Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizkri6f0001jp0477whcv55",
+      "name": "QuyTNTK ( Kitten )",
+      "active": true,
+      "createdAt": "2025-12-10T05:34:43.911Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizksg580000kw04da8p8z1s",
+      "name": "PhatTM1",
+      "active": true,
+      "createdAt": "2025-12-10T05:35:27.931Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    },
+    {
+      "id": "cmizksqlt0001kw048qqwpxtp",
+      "name": "ThuongTN2",
+      "active": true,
+      "createdAt": "2025-12-10T05:35:41.395Z",
+      "groupId": "cmjcdk8ep000026ec6ukp5wvy"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "cmji26klu0001ju04zd0687mn",
+      "date": "2025-12-28T00:00:00.000Z",
+      "courtFee": 440000,
+      "shuttleFee": 0,
+      "fundFee": 0,
+      "courtAddress": "Sân Victory 18h00~20h00 sân A1~A2",
+      "status": "PLANNED",
+      "hostId": "cmizkrbnx0000jp04e2vd24h4",
+      "note": null,
+      "totalAmount": 440000,
+      "qrContent": "Cau long 28/12/2025",
+      "qrAccountNo": "0909962713",
+      "qrBankId": "Momo",
+      "completedAt": null,
+      "passcode": "123"
+    },
+    {
+      "id": "cmjh3hdjw0001jq04ah81x35u",
+      "date": "2025-12-25T00:00:00.000Z",
+      "courtFee": 440000,
+      "shuttleFee": 92000,
+      "fundFee": 0,
+      "courtAddress": "Sân Trạm Cầu Lông 18h00-20h00 sân 2-3",
+      "status": "PLANNED",
+      "hostId": "cmizkrbnx0000jp04e2vd24h4",
+      "note": null,
+      "totalAmount": 532000,
+      "qrContent": "Cau long 25/12/2025",
+      "qrAccountNo": "0909962713",
+      "qrBankId": "Momo",
+      "completedAt": null,
+      "passcode": ""
+    },
+    {
+      "id": "cmj78hlzt0001k004j76nqpme",
+      "date": "2025-12-18T00:00:00.000Z",
+      "courtFee": 440000,
+      "shuttleFee": 138000,
+      "fundFee": 0,
+      "courtAddress": "Sân Trạm Cầu Lông 1 sân:17h30-19h30 ~ 1 sân:18h00-20h00",
+      "status": "COMPLETED",
+      "hostId": "cmizksg580000kw04da8p8z1s",
+      "note": "ThuongTN2 tính tiền cầu nhé",
+      "totalAmount": 578000,
+      "qrContent": "Cau long 18/12/2025",
+      "qrAccountNo": "0905293147",
+      "qrBankId": "TPB",
+      "completedAt": "2025-12-18T13:20:32.523Z",
+      "passcode": ""
+    },
+    {
+      "id": "cmjcaqlwv00012jejjpoxw01j",
+      "date": "2025-12-19T00:00:00.000Z",
+      "courtFee": 400000,
+      "shuttleFee": 0,
+      "fundFee": 0,
+      "courtAddress": "Test Passcode khi vào buổi",
+      "status": "CANCELED",
+      "hostId": "cmizkivzt0000zlfl13zcaqxx",
+      "note": "",
+      "totalAmount": 400000,
+      "qrContent": null,
+      "qrAccountNo": null,
+      "qrBankId": null,
+      "completedAt": null,
+      "passcode": "113114"
+    },
+    {
+      "id": "cmj6nhisy0001l904z9cb8umf",
+      "date": "2025-12-16T00:00:00.000Z",
+      "courtFee": 200000,
+      "shuttleFee": 138000,
+      "fundFee": 0,
+      "courtAddress": "Sân An Bình 18h ~ 20h",
+      "status": "COMPLETED",
+      "hostId": "cmizkt3ou0003kw04f7zvozld",
+      "note": "ThuongTN2 tính tiền cầu nhé",
+      "totalAmount": 338000,
+      "qrContent": "Cau long 16/12/2025",
+      "qrAccountNo": "0818191471",
+      "qrBankId": "TPBank",
+      "completedAt": "2025-12-16T14:17:48.352Z",
+      "passcode": ""
+    },
+    {
+      "id": "cmizlkoo70001le040t6rcvpi",
+      "date": "2025-12-11T00:00:00.000Z",
+      "courtFee": 440000,
+      "shuttleFee": 0,
+      "fundFee": 0,
+      "courtAddress": "Trạm Cầu Lông",
+      "status": "COMPLETED",
+      "hostId": "cmizksg580000kw04da8p8z1s",
+      "note": null,
+      "totalAmount": 440000,
+      "qrContent": "Cau long 11/12/2025",
+      "qrAccountNo": "22147932044",
+      "qrBankId": "TPB",
+      "completedAt": "2025-12-12T02:35:49.117Z",
+      "passcode": ""
+    },
+    {
+      "id": "cmj0ya5kc0003jv04km2l1o8f",
+      "date": "2025-12-14T00:00:00.000Z",
+      "courtFee": 440000,
+      "shuttleFee": 0,
+      "fundFee": 0,
+      "courtAddress": "Sân Victory",
+      "status": "COMPLETED",
+      "hostId": "cmizkrbnx0000jp04e2vd24h4",
+      "note": null,
+      "totalAmount": 440000,
+      "qrContent": "Cau long 14/12/2025",
+      "qrAccountNo": "0909962713",
+      "qrBankId": "Tpb",
+      "completedAt": "2025-12-15T04:24:53.147Z",
+      "passcode": ""
+    },
+    {
+      "id": "cmj8285jm0001l504wckvewf9",
+      "date": "2025-12-21T00:00:00.000Z",
+      "courtFee": 440000,
+      "shuttleFee": 92000,
+      "fundFee": 0,
+      "courtAddress": "Sân Victory 18h30~20h30 D1~D2",
+      "status": "COMPLETED",
+      "hostId": "cmizkrbnx0000jp04e2vd24h4",
+      "note": null,
+      "totalAmount": 532000,
+      "qrContent": "Cau long 21/12/2025",
+      "qrAccountNo": "0909962713",
+      "qrBankId": "MoMo",
+      "completedAt": "2025-12-21T13:55:41.655Z",
+      "passcode": ""
+    },
+    {
+      "id": "cmjfn2loi0001jy0490a7zwra",
+      "date": "2025-12-23T00:00:00.000Z",
+      "courtFee": 0,
+      "shuttleFee": 0,
+      "fundFee": 0,
+      "courtAddress": null,
+      "status": "CANCELED",
+      "hostId": "cmizkrbnx0000jp04e2vd24h4",
+      "note": "ít người",
+      "totalAmount": null,
+      "qrContent": null,
+      "qrAccountNo": null,
+      "qrBankId": null,
+      "completedAt": null,
+      "passcode": ""
+    }
+  ],
+  "participations": [
+    {
+      "id": "cmj6nhuro0001kz04wr7orfga",
+      "sessionId": "cmj6nhisy0001l904z9cb8umf",
+      "memberId": "cmizksqlt0001kw048qqwpxtp",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 42250,
+      "paid": true
+    },
+    {
+      "id": "cmjdzmy740001jp04kypiny3u",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": "cmizktxsz0007kw046nbqu4pq",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmj85fnmb0001jo04ycz02pt3",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": "cmizkt7bb0004kw04qkm5h8ar",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmj82ldk20001ie04sykn3cxp",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": "cmizkrbnx0000jp04e2vd24h4",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmjfswsy70001l504rdjdkkn5",
+      "sessionId": "cmjfn2loi0001jy0490a7zwra",
+      "memberId": "cmizkivzt0000zlfl13zcaqxx",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": null,
+      "paid": false
+    },
+    {
+      "id": "cmj9tx5d30003l104syb30iud",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": null,
+      "guestName": "PhuongTN22",
+      "isGuest": true,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj860a730001jx04h72oggz0",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizkivzt0000zlfl13zcaqxx",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmjgkf95c0001l7042wcbku0s",
+      "sessionId": "cmjfn2loi0001jy0490a7zwra",
+      "memberId": "cmizksucj0002kw04hagricdc",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": null,
+      "paid": false
+    },
+    {
+      "id": "cmji28m8g0005jx04brrr83pj",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": "cmizktn7k0006kw045cxvhmnl",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmji28oh80007jx04a0amwop5",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": "cmizkri6f0001jp0477whcv55",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmji4dedx0001lb04v1mvdmcl",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": "cmizktb2l0005kw04tno12rdh",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmj1kwp8z0001jp04r4a7cxyx",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizksucj0002kw04hagricdc",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmizqcbzf0003jr049dx0un30",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": null,
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmj6nputb0005kz04hilqsof4",
+      "sessionId": "cmj6nhisy0001l904z9cb8umf",
+      "memberId": null,
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 42250,
+      "paid": true
+    },
+    {
+      "id": "cmjidutrm0001jp04y4sznq2l",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": "cmizp4pk20000gt04frbvzxyc",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmj0ucca70005jr04a1r45f16",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizktn7k0006kw045cxvhmnl",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmj0uc9i20003jr0437x7yoqb",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizksqlt0001kw048qqwpxtp",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmizqc9bl0001jr04ppnvwjrw",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizp4pk20000gt04frbvzxyc",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmizlnosk000bjs049vkl44e0",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": null,
+      "guestName": "Mỹ Hà",
+      "isGuest": true,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmizln5vs0009js04fcy09i0z",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizlmjvt0002le046v9zxb6o",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmizllzai0007js04a53laijh",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizldwuz0000k304wyaogx5c",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmizlltxe0005js0429o1as0k",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizksg580000kw04da8p8z1s",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmizlllfx0003js04h23np89j",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizkri6f0001jp0477whcv55",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmizlkztq0003jl045d7pfwny",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizkrbnx0000jp04e2vd24h4",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmjjkme110003ju04k0xbgf5e",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": null,
+      "guestName": "Hồng",
+      "isGuest": true,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmjjkymrz0003l704mh1k9ksl",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": null,
+      "guestName": "VuMVT",
+      "isGuest": true,
+      "customFee": 48363,
+      "paid": false
+    },
+    {
+      "id": "cmizlkyqe0001jl049o2vnbbm",
+      "sessionId": "cmizlkoo70001le040t6rcvpi",
+      "memberId": "cmizkivzt0000zlfl13zcaqxx",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 37000,
+      "paid": true
+    },
+    {
+      "id": "cmj2h8wwd0001jo04p573d69s",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": "cmizktb2l0005kw04tno12rdh",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj1lo3ac0001jr04fwwngx93",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": "cmizktxsz0007kw046nbqu4pq",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmjh3x5t60005l2049632mj58",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": "cmizkt7bb0004kw04qkm5h8ar",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 48363,
+      "paid": false
+    },
+    {
+      "id": "cmjjeli1i0001l404zvx8y0dj",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": "cmizksqlt0001kw048qqwpxtp",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 48363,
+      "paid": true
+    },
+    {
+      "id": "cmjl2akja0001jv05ew9mrep2",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": null,
+      "guestName": "Hungnq113",
+      "isGuest": true,
+      "customFee": 48363,
+      "paid": true
+    },
+    {
+      "id": "cmjh3rvlc0001l204s1dk5016",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": "cmizkivzt0000zlfl13zcaqxx",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 48363,
+      "paid": true
+    },
+    {
+      "id": "cmj1h2d9d0003lb04yiipglqh",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": "cmizkt7bb0004kw04qkm5h8ar",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj1gxmky0001lb042ayo1xcr",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": null,
+      "guestName": "HungNQ113",
+      "isGuest": true,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj1195bo0001ib04miaqwe8j",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": "cmizp4pk20000gt04frbvzxyc",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj1056xn0001jv04vjgh5lsh",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": null,
+      "guestName": "Quynh",
+      "isGuest": true,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj0yqqwo0007l804tr7zrc2w",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": "cmizkri6f0001jp0477whcv55",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj0yg6m30005l804x3j06v0k",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": "cmizksg580000kw04da8p8z1s",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj0yfkgr0003l80426sbfc6j",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": "cmizktn7k0006kw045cxvhmnl",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj0yd18h0001l804q8q0wkbf",
+      "sessionId": "cmj0ya5kc0003jv04km2l1o8f",
+      "memberId": "cmizkrbnx0000jp04e2vd24h4",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": true
+    },
+    {
+      "id": "cmj6xqp9v0005k004898heffu",
+      "sessionId": "cmj6nhisy0001l904z9cb8umf",
+      "memberId": null,
+      "guestName": "PhuongTN22",
+      "isGuest": true,
+      "customFee": 42250,
+      "paid": true
+    },
+    {
+      "id": "cmj6xqc7t0003k004g28xrg73",
+      "sessionId": "cmj6nhisy0001l904z9cb8umf",
+      "memberId": null,
+      "guestName": "TrieuTQ1",
+      "isGuest": true,
+      "customFee": 42250,
+      "paid": true
+    },
+    {
+      "id": "cmj6xq33p0001k004sgpnaxki",
+      "sessionId": "cmj6nhisy0001l904z9cb8umf",
+      "memberId": null,
+      "guestName": "LamNX8",
+      "isGuest": true,
+      "customFee": 42250,
+      "paid": true
+    },
+    {
+      "id": "cmj6nqx6w0007kz045p4s10fr",
+      "sessionId": "cmj6nhisy0001l904z9cb8umf",
+      "memberId": "cmizkivzt0000zlfl13zcaqxx",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 42250,
+      "paid": true
+    },
+    {
+      "id": "cmj6nhx5k0003kz04x2dwobi9",
+      "sessionId": "cmj6nhisy0001l904z9cb8umf",
+      "memberId": "cmizkt3ou0003kw04f7zvozld",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 42250,
+      "paid": true
+    },
+    {
+      "id": "cmj7x22f00001jo04vrlnw4ph",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizksg580000kw04da8p8z1s",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj7bsfut0003l204f0wqd317",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizksqlt0001kw048qqwpxtp",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj7bqs0t0001l204fied90zq",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizldwuz0000k304wyaogx5c",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj79cfsn0001l204fup13iww",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizkt7bb0004kw04qkm5h8ar",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj78q2wj000fjj04t7bl2w6n",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizlmjvt0002le046v9zxb6o",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj78jj7r0005jj04bgpcfuik",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizktn7k0006kw045cxvhmnl",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj78jgzb0003jj04ufltvk4i",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizkri6f0001jp0477whcv55",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj78i55q0001jj04aqslno0k",
+      "sessionId": "cmj78hlzt0001k004j76nqpme",
+      "memberId": "cmizkrbnx0000jp04e2vd24h4",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 57800,
+      "paid": true
+    },
+    {
+      "id": "cmj8gx1q20001kw04wt4ko7km",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": null,
+      "guestName": "Quỳnh 😅",
+      "isGuest": true,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmj85fx6u0003jo04dp2gshlt",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": null,
+      "guestName": "Hồng",
+      "isGuest": true,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmj85g4r60005jo049lf1ei6d",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": "cmizksg580000kw04da8p8z1s",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmji27wyi0001jx04x0o1mfuq",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": "cmizkrbnx0000jp04e2vd24h4",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmji2ft3t0009jx040bnvw24o",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": null,
+      "guestName": "Quynh",
+      "isGuest": true,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmjftjz5z0001jp04h144hj5i",
+      "sessionId": "cmjfn2loi0001jy0490a7zwra",
+      "memberId": "cmizksqlt0001kw048qqwpxtp",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": null,
+      "paid": false
+    },
+    {
+      "id": "cmjftn19b0003jp04cf1mhoxa",
+      "sessionId": "cmjfn2loi0001jy0490a7zwra",
+      "memberId": "cmizkrbnx0000jp04e2vd24h4",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": null,
+      "paid": false
+    },
+    {
+      "id": "cmj85hdyd0009jo047hylx8x4",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": "cmizkvvr60008kw0451dj1dyy",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmjgm92ln0001l404mvoetefz",
+      "sessionId": "cmjfn2loi0001jy0490a7zwra",
+      "memberId": null,
+      "guestName": "PhuongTN22",
+      "isGuest": true,
+      "customFee": null,
+      "paid": false
+    },
+    {
+      "id": "cmjdxywdx0001jm04slyphr46",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": "cmizlmjvt0002le046v9zxb6o",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmj85g8q10007jo04w0rww24q",
+      "sessionId": "cmj8285jm0001l504wckvewf9",
+      "memberId": "cmizktb2l0005kw04tno12rdh",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 59111,
+      "paid": true
+    },
+    {
+      "id": "cmji50r3l0001l5043r51cf15",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": "cmizkvvr60008kw0451dj1dyy",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmj731l520001kz049l1z53ib",
+      "sessionId": "cmj6nhisy0001l904z9cb8umf",
+      "memberId": "cmizksucj0002kw04hagricdc",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 42250,
+      "paid": true
+    },
+    {
+      "id": "cmjjkm1pt0001ju04etjmt9s8",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": "cmizkt7bb0004kw04qkm5h8ar",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmjli3u7e0001i804r4oxg3e1",
+      "sessionId": "cmji26klu0001ju04zd0687mn",
+      "memberId": "cmizlmjvt0002le046v9zxb6o",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 44000,
+      "paid": false
+    },
+    {
+      "id": "cmjjkxmuf0001l704aenx8j2e",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": null,
+      "guestName": "HienMB1",
+      "isGuest": true,
+      "customFee": 48363,
+      "paid": false
+    },
+    {
+      "id": "cmjjuw67n0001le04xh2zigai",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": "cmizktb2l0005kw04tno12rdh",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 48363,
+      "paid": true
+    },
+    {
+      "id": "cmjh538tg0007l50495clv2df",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": "cmizktxsz0007kw046nbqu4pq",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 48363,
+      "paid": true
+    },
+    {
+      "id": "cmjjelo390003l404trbnl1c1",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": null,
+      "guestName": "TrieuTQ1",
+      "isGuest": true,
+      "customFee": 48363,
+      "paid": true
+    },
+    {
+      "id": "cmjh518sf0005l504h62m7198",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": "cmizldwuz0000k304wyaogx5c",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 48363,
+      "paid": true
+    },
+    {
+      "id": "cmjh3rye00003l204u4qppbee",
+      "sessionId": "cmjh3hdjw0001jq04ah81x35u",
+      "memberId": "cmizkrbnx0000jp04e2vd24h4",
+      "guestName": null,
+      "isGuest": false,
+      "customFee": 48363,
+      "paid": true
+    }
+  ]
+}

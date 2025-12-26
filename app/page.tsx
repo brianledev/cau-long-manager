@@ -1,13 +1,17 @@
 // app/page.tsx
 import { prisma } from '@/lib/db'
 import CreateSessionForm from '@/components/CreateSessionForm'
+import { TopName } from '@/components/TopName'
+import { getGlobalTop3 } from '@/lib/getGlobalTop3'
 import PassGate from '@/components/PassGate'
 
-export default async function HomePage() {
-  const today = new Date()
-  const todayStr = today.toISOString().slice(0, 10)
 
-  const [groups, allMembers, openSessions, recentSessions] = await Promise.all([
+export default async function HomePage() {
+  const globalTop3Ids = await getGlobalTop3();
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+
+  const [groups, allMembers, openSessions, recentSessions, participations] = await Promise.all([
     prisma.group.findMany({
       orderBy: { createdAt: 'asc' },
     }),
@@ -26,7 +30,17 @@ export default async function HomePage() {
       take: 8,
       include: { host: true },
     }),
-  ])
+    prisma.participation.findMany({ where: { isGuest: false } }),
+  ]);
+
+  // Sort allMembers theo số buổi giảm dần (giữ để hiển thị đẹp, nhưng chỉ top 3 toàn cục mới có màu động)
+  const memberSessionCount: Record<string, number> = {};
+  for (const p of participations) {
+    if (p.memberId && !p.isGuest) {
+      memberSessionCount[p.memberId] = (memberSessionCount[p.memberId] || 0) + 1;
+    }
+  }
+  const sortedMembers = [...allMembers].sort((a, b) => (memberSessionCount[b.id] || 0) - (memberSessionCount[a.id] || 0));
 
   return (
     //<PassGate>
@@ -190,6 +204,5 @@ export default async function HomePage() {
         )}
       </section>
     </div>
-    //</PassGate>
-  )
+  );
 }

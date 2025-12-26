@@ -5,6 +5,8 @@ import PassGate from '@/components/PassGate'
 import GroupSelector from '@/components/GroupSelector'
 import GroupActions from '@/components/GroupActions'
 import MemberActions from '@/components/MemberActions'
+import { TopName } from '@/components/TopName'
+import { getGlobalTop3 } from '@/lib/getGlobalTop3'
 
 export default async function MembersPage({
   searchParams,
@@ -13,6 +15,7 @@ export default async function MembersPage({
 }) {
   const params = await searchParams
   const selectedGroupId = params?.group
+  const globalTop3Ids = await getGlobalTop3();
 
   // Lấy toàn bộ groups
   const groups = await prisma.group.findMany({
@@ -46,6 +49,11 @@ export default async function MembersPage({
     ? groups.find((g: any) => g.id === selectedGroupId)?.name || 'Không xác định'
     : 'Tất cả'
 
+  // Tìm member top 1 (nhiều buổi nhất)
+  let topCount = Math.max(...members.map(m => m.participations.length));
+  let topMembers = members.filter(m => m.participations.length === topCount);
+  // Sort members theo số buổi giảm dần (giữ để hiển thị đẹp, nhưng chỉ top 3 toàn cục mới có màu động)
+  members = members.sort((a, b) => b.participations.length - a.participations.length);
   return (
     <div className="main-container space-y-4">
       <section className="card">
@@ -185,7 +193,13 @@ export default async function MembersPage({
                 {members.map((m) => (
                   <tr key={m.id} className="group transition-colors hover:bg-blue-50/50">
                     <td className="px-4 py-3">
-                      <span className="font-medium text-slate-900">{m.name}</span>
+                      {(() => {
+                        const rank = globalTop3Ids.indexOf(m.id);
+                        if (rank !== -1) {
+                          return <TopName rank={rank + 1}>{m.name}</TopName>;
+                        }
+                        return <span className="font-medium text-slate-900">{m.name}</span>;
+                      })()}
                     </td>
                     <td className="px-4 py-3">
                       <GroupSelector

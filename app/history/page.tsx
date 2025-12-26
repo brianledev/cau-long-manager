@@ -1,3 +1,5 @@
+import { TopName } from '@/components/TopName'
+import { getGlobalTop3 } from '@/lib/getGlobalTop3'
 // app/history/page.tsx
 import { prisma } from '@/lib/db'
 import PassGate from '@/components/PassGate'
@@ -14,20 +16,23 @@ function statusLabel(status: string) {
       return status
   }
 }
-
 export default async function HistoryPage() {
+  const globalTop3Ids = await getGlobalTop3();
   const sessions = await prisma.session.findMany({
     orderBy: { date: 'desc' },
     include: {
       host: true,
       participations: true,
     },
-  })
+  });
 
-  const total = sessions.length
-  const completed = sessions.filter((s) => s.status === 'COMPLETED').length
-  const canceled = sessions.filter((s) => s.status === 'CANCELED').length
+  const total = sessions.length;
+  const completed = sessions.filter((s) => s.status === 'COMPLETED').length;
+  const canceled = sessions.filter((s) => s.status === 'CANCELED').length;
 
+  // Lấy tất cả member và participation để xác định top
+  const allMembers = await prisma.member.findMany({ select: { id: true, name: true } });
+  const participations = await prisma.participation.findMany({ where: { isGuest: false } });
   return (
     // <PassGate>
     <div className="main-container space-y-4">
@@ -155,6 +160,5 @@ export default async function HistoryPage() {
         </div>
       </section>
     </div>
-    // </PassGate>
   )
 }
