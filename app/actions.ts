@@ -115,9 +115,12 @@ export async function createSessionAction(formData: FormData) {
   const passcodeRaw = String(formData.get('passcode') ?? '').trim()
   const passcode = passcodeRaw ? passcodeRaw : undefined
 
-  // lấy editPasscode (mã unlock chỉnh sửa vào ngày diễn ra) nếu có
+  // lấy editPasscode (mã unlock chỉnh sửa vào ngày diễn ra) - bắt buộc
   const editPasscodeRaw = String(formData.get('editPasscode') ?? '').trim()
-  const editPasscode = editPasscodeRaw ? editPasscodeRaw : undefined
+  if (!editPasscodeRaw) {
+    throw new Error('Mật khẩu unlock chỉnh sửa là bắt buộc')
+  }
+  const editPasscode = editPasscodeRaw
 
   await prisma.session.create({
     data: {

@@ -84,11 +84,12 @@ export default function CreateSessionForm({
       </label>
 
       <label className="field">
-        <span className="field-label">Mật khẩu unlock chỉnh sửa (tuỳ chọn)</span>
+        <span className="field-label">Mật khẩu unlock chỉnh sửa <span className="text-red-500">*</span></span>
         <input
           name="editPasscode"
           className="field-input"
-          placeholder="VD: 1234 (để trống => ai cũng edit được)"
+          placeholder="VD: 1234"
+          required
         />
       </label>
 

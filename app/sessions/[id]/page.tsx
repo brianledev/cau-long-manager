@@ -27,8 +27,6 @@ import LockButton from '@/components/LockButton'
 export const revalidate = 0
 export const dynamic = 'force-dynamic'
 
-
-
 const DEFAULT_BANK_ID = process.env.NEXT_PUBLIC_BANK_ID ?? 'MB'
 const DEFAULT_ACCOUNT_NO = process.env.NEXT_PUBLIC_ACCOUNT_NO ?? ''
 
