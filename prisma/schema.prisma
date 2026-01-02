@@ -61,7 +61,8 @@ model Session {
   completedAt DateTime?
 
   participations Participation[]
-  passcode     String   @default("")  // <-- security code
+  passcode     String   @default("")  // security code for joining
+  editPasscode String   @default("")  // security code for editing on session day
 }
 
 model Participation {

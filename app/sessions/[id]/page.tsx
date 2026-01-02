@@ -9,6 +9,8 @@ import {
   completeSessionAction,
   cancelSessionAction,
   updateSessionAction,
+  verifySessionEditPasscodeAction,
+  lockSessionAction,
 } from '@/app/actions'
 import { notFound } from 'next/navigation'
 import PassGate from '@/components/PassGate'
@@ -16,6 +18,10 @@ import PaidToggle from '@/components/PaidToggle'
 import JoinSessionForm from '@/components/JoinSessionForm'
 import { cookies } from 'next/headers'
 import { verifySessionPasscodeAction } from '@/app/actions'
+import { getSessionAccessFlags } from '@/lib/sessionAccess'
+import JoinCountdown from '@/components/JoinCountdown'
+import UnlockButton from '@/components/UnlockButton'
+import LockButton from '@/components/LockButton'
 
 
 
@@ -97,7 +103,12 @@ export default async function SessionPage(props: any) {
     orderBy: { createdAt: 'asc' },
   })
 
+  // **TÍNH FLAGS KHÓA/MỞ**
+  const editAccess = cookieStore.get(`session_edit_access_${id}`)?.value === '1'
+  const { isJoinOpen, isSessionDay, canJoin, canEdit: canEditWithTimeCheck } = getSessionAccessFlags(session, editAccess)
 
+  // Hiển thị lỗi từ query params
+  const errorCode = searchParams?.err as string | undefined
   
   const participants = session.participations
   const perFee = participants.length ? participants[0].customFee ?? 0 : 0
@@ -110,7 +121,7 @@ export default async function SessionPage(props: any) {
   })
 
   const totalAmount = session.totalAmount ?? 0
-  const canEdit = session.status === 'PLANNED'
+  const canEdit = canEditWithTimeCheck  // **CÓ THỂ CHỈNH SỬA (theo thời gian + edit lock)**
   const canQR = ['PLANNED', 'COMPLETED'].includes(session.status)
   const inputCls = 'input w-full'
   const selectCls = 'select w-full'
@@ -155,13 +166,72 @@ export default async function SessionPage(props: any) {
         <div className="mt-2 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 border border-emerald-100">
           ✅ Lưu thay đổi thành công
         </div>
+      )}
+      {/* **ERROR MESSAGES** */}
+      {errorCode === 'join_locked' && (
+        <div className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-xs font-medium text-red-700 border border-red-200">
+          ❌ Buổi này đã khóa tham gia (còn &lt;24h đến ngày diễn ra)
+        </div>
+      )}
+      {errorCode === 'edit_locked' && (
+        <div className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-xs font-medium text-red-700 border border-red-200">
+          ❌ Hôm nay là ngày diễn ra - cần mật khẩu unlock để chỉnh sửa
+        </div>
+      )}
+      {errorCode === 'edit_passcode_wrong' && (
+        <div className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-xs font-medium text-red-700 border border-red-200">
+          ❌ Mật khẩu unlock sai
+        </div>
       )} 
         </div>
         <a href="/" className="text-xs font-medium text-blue-600 hover:underline">
           ← Về trang chính
         </a>
       </section>
-        <section className="card space-y-3">
+
+      {/* COUNTDOWN - ALWAYS SHOW */}
+      <section className="card">
+        <JoinCountdown sessionDate={session.date} />
+      </section>
+
+      {/* UNLOCK/LOCK BUTTON - SHOW ON SESSION DAY */}
+      {isSessionDay && session.status === 'PLANNED' && (
+        <section className={`card border-l-4 ${editAccess ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500'}`}>
+          <div className="flex items-center justify-between">
+            <div>
+              {editAccess ? (
+                <>
+                  <h3 className="font-semibold text-green-900">✅ Buổi này đã mở khóa</h3>
+                  <p className="text-sm text-green-700 mt-1">Bạn có thể chỉnh sửa buổi. Bấm khóa khi xong.</p>
+                </>
+              ) : (
+                <>
+                  <h3 className="font-semibold text-amber-900">🔐 Buổi này đang bị khóa</h3>
+                  <p className="text-sm text-amber-700 mt-1">Nhập mật khẩu để mở khóa chỉnh sửa</p>
+                </>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <UnlockButton
+                sessionId={id}
+                isSessionDay={isSessionDay}
+                editAccess={editAccess}
+                sessionStatus={session.status}
+              />
+              <LockButton
+                sessionId={id}
+                isSessionDay={isSessionDay}
+                editAccess={editAccess}
+                sessionStatus={session.status}
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CHỈNH SỬA BUỔI - chỉ hiện khi canEdit */}
+      {canEdit && (
+      <section className="card space-y-3">
           <h2 className="card-title">Chỉnh sửa buổi</h2>
 
           <form action={updateSessionAction} className="grid gap-4 md:grid-cols-2">
@@ -250,11 +320,17 @@ export default async function SessionPage(props: any) {
             </div>
           </form>
         </section>
+      )}
  
-      {/* JOIN / GUEST */}
+      {/* JOIN / GUEST - chỉ hiện khi canEdit */}
       {canEdit && (
         <section className="card space-y-3 text-sm">
           <h2 className="card-title">Tham gia buổi này</h2>
+          {!canJoin && !isSessionDay && (
+            <div className="rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-800">
+              ⏰ Buổi này đã khóa tham gia vì còn &lt;24h đến ngày diễn ra
+            </div>
+          )}
           <p className="card-subtitle">
             Thành viên chọn nhóm rồi chọn tên mình, hoặc nhập tên khách vãng lai.
           </p>

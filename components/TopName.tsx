@@ -15,11 +15,10 @@ export function TopName({ children, rank }: { children: React.ReactNode, rank?: 
     }
   }, [rank, prevRank]);
 
-    // default rainbow (nếu rank > 3)
-    // Hiệu ứng cầu vồng động HSL cho mọi top
-    let gradient =
-      'linear-gradient(90deg, hsl(0, 100%, 50%), hsl(60, 100%, 50%), hsl(120, 100%, 50%), hsl(180, 100%, 50%), hsl(240, 100%, 50%), hsl(300, 100%, 50%), hsl(360, 100%, 50%))';
-    let animation = 'rainbow-hsl-move 3s linear infinite';
+  // Hiệu ứng cầu vồng đầy đủ (đỏ, vàng, xanh lá, xanh dương, tím)
+  let gradient =
+    'linear-gradient(90deg, hsl(0, 100%, 50%), hsl(60, 100%, 50%), hsl(120, 100%, 50%), hsl(180, 100%, 50%), hsl(220, 100%, 55%), hsl(240, 100%, 50%), hsl(275, 100%, 60%), hsl(300, 80%, 60%), hsl(320, 80%, 60%), hsl(0, 100%, 50%))';
+  let animation = 'rainbow-hsl-move 4s ease-in-out infinite alternate';
 
     return (
       <span
@@ -30,7 +29,7 @@ export function TopName({ children, rank }: { children: React.ReactNode, rank?: 
           WebkitBackgroundClip: 'text',
           color: 'transparent',
           WebkitTextFillColor: 'transparent',
-          backgroundSize: '300% 100%',
+          backgroundSize: '200% 100%',
           animation,
           transition: 'background 0.5s, transform 0.5s',
           transform: animate ? 'scale(1.15)' : 'scale(1)',
@@ -50,7 +49,7 @@ export function TopName({ children, rank }: { children: React.ReactNode, rank?: 
         WebkitBackgroundClip: 'text',
         color: 'transparent',
         WebkitTextFillColor: 'transparent',
-        backgroundSize: '300% 100%',
+        backgroundSize: '110% 100%',
         animation,
         transition: 'background 0.5s, transform 0.5s',
         transform: animate ? 'scale(1.15)' : 'scale(1)',

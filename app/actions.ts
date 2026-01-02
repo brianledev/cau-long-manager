@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
+import { getSessionAccessFlags, generatePasscode } from '@/lib/sessionAccess'
 
 
 // Tính tiền mỗi người, làm tròn lên 1.000
@@ -110,10 +111,13 @@ export async function createSessionAction(formData: FormData) {
   const courtAddress = courtAddressRaw || null  
   const date = dateStr ? new Date(dateStr) : new Date()
 
-  // lấy thêm passcode (mã truy cập) nếu có
+  // lấy passcode (mã truy cập buổi) nếu có
   const passcodeRaw = String(formData.get('passcode') ?? '').trim()
   const passcode = passcodeRaw ? passcodeRaw : undefined
 
+  // lấy editPasscode (mã unlock chỉnh sửa vào ngày diễn ra) nếu có
+  const editPasscodeRaw = String(formData.get('editPasscode') ?? '').trim()
+  const editPasscode = editPasscodeRaw ? editPasscodeRaw : undefined
 
   await prisma.session.create({
     data: {
@@ -124,6 +128,7 @@ export async function createSessionAction(formData: FormData) {
       fundFee,
       courtAddress,
       passcode,
+      editPasscode,
     },
   })
 
@@ -131,12 +136,86 @@ export async function createSessionAction(formData: FormData) {
   revalidatePath('/history')
 }
 
+// Verify edit passcode (unlock edit trên ngày diễn ra)
+export async function verifySessionEditPasscodeAction(formData: FormData): Promise<{ success: boolean; error?: string }> {
+  const sessionId = String(formData.get('sessionId') || '')
+  const inputPasscode = String(formData.get('editPasscode') || '').trim()
+
+  if (!sessionId) return { success: false, error: 'Thiếu session ID' }
+
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  })
+
+  if (!session || session.editPasscode !== inputPasscode) {
+    return { success: false, error: 'Mật khẩu không đúng' }
+  }
+
+  // Calculate time until end of session day (auto-lock at 23:59:59)
+  const now = new Date()
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+  
+  const dateString = formatter.format(now) // Current date in VN
+  const [year, month, day] = dateString.split('-').map(Number)
+  const sessionDayEnd = new Date(Date.UTC(year, month - 1, day + 1)) // Start of next day UTC
+  const vnOffset = -7 * 60 * 60 * 1000 // Adjust for VN timezone
+  const sessionDayEndVN = new Date(sessionDayEnd.getTime() + vnOffset)
+  
+  const maxAge = Math.max(1, Math.floor((sessionDayEndVN.getTime() - now.getTime()) / 1000))
+
+  // Set cookie with auto-lock at end of session day
+  const cookieStore = await cookies()
+  cookieStore.set(`session_edit_access_${sessionId}`, '1', {
+    httpOnly: true,
+    maxAge: maxAge,
+  })
+
+  revalidatePath(`/sessions/${sessionId}`)
+  return { success: true }
+}
+
+// Lock edit passcode (remove edit access)
+export async function lockSessionAction(formData: FormData) {
+  const sessionId = String(formData.get('sessionId') || '')
+
+  if (!sessionId) return
+
+  const cookieStore = await cookies()
+  cookieStore.delete(`session_edit_access_${sessionId}`)
+
+  redirect(`/sessions/${sessionId}`)
+}
+
 // Thành viên join buổi
 export async function joinSessionAction(formData: FormData) {
   const sessionId = String(formData.get('sessionId') || '')
   const memberId = String(formData.get('memberId') || '')
 
-  if (!sessionId || !memberId) return
+  if (!sessionId || !memberId) {
+    return
+  }
+
+  // Check JOIN WINDOW
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  })
+  if (!session) {
+    redirect(`/sessions/${sessionId}?err=session_not_found`)
+  }
+
+  // If host has unlocked editing, allow join regardless of deadline
+  const cookieStore = await cookies()
+  const hostUnlocked = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  
+  const { canJoin } = getSessionAccessFlags(session, false)
+  if (!canJoin && !hostUnlocked) {
+    redirect(`/sessions/${sessionId}?err=join_locked`)
+  }
 
   // tránh join trùng
   const exists = await prisma.participation.findFirst({
@@ -167,6 +246,23 @@ export async function joinGuestAction(formData: FormData) {
 
   if (!sessionId || !guestName) return
 
+  // Check JOIN WINDOW
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  })
+  if (!session) {
+    redirect(`/sessions/${sessionId}?err=session_not_found`)
+  }
+
+  // If host has unlocked editing, allow join regardless of deadline
+  const cookieStore = await cookies()
+  const hostUnlocked = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+
+  const { canJoin } = getSessionAccessFlags(session, false)
+  if (!canJoin && !hostUnlocked) {
+    redirect(`/sessions/${sessionId}?err=join_locked`)
+  }
+
   await prisma.participation.create({
     data: {
       sessionId,
@@ -186,6 +282,19 @@ export async function leaveSessionAction(formData: FormData) {
 
   if (!sessionId || !participationId) return
 
+  // Check JOIN WINDOW
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  })
+  if (!session) {
+    redirect(`/sessions/${sessionId}?err=session_not_found`)
+  }
+
+  const { canJoin } = getSessionAccessFlags(session, false)
+  if (!canJoin) {
+    redirect(`/sessions/${sessionId}?err=join_locked`)
+  }
+
   await prisma.participation.delete({
     where: { id: participationId },
   })
@@ -199,17 +308,28 @@ export async function calculateFeeAction(formData: FormData) {
   const sessionId = String(formData.get('sessionId') || '')
   if (!sessionId) return
 
-  const totalAmount = Number(formData.get('totalAmount') || 0)
-  const qrContent = String(formData.get('qrContent') || '')
-  const qrBankId = String(formData.get('qrBankId') || '')
-  const qrAccountNo = String(formData.get('qrAccountNo') || '')
-
   const session = await prisma.session.findUnique({
     where: { id: sessionId },
     include: { participations: true },
   })
 
-  if (!session) return
+  if (!session) {
+    redirect(`/sessions/${sessionId}?err=session_not_found`)
+  }
+
+  // Check EDIT LOCK
+  const cookieStore = await cookies()
+  const hasEditAccess = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  const { canEdit } = getSessionAccessFlags(session, hasEditAccess)
+  if (!canEdit) {
+    redirect(`/sessions/${sessionId}?err=edit_locked`)
+  }
+
+  const totalAmount = Number(formData.get('totalAmount') || 0)
+  const qrContent = String(formData.get('qrContent') || '')
+  const qrBankId = String(formData.get('qrBankId') || '')
+  const qrAccountNo = String(formData.get('qrAccountNo') || '')
+
   const count = session.participations.length
   if (count === 0) return
 
@@ -243,6 +363,21 @@ export async function togglePaidAction(formData: FormData) {
 
   if (!sessionId || !participationId) return
 
+  // Check EDIT LOCK
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  })
+  if (!session) {
+    redirect(`/sessions/${sessionId}?err=session_not_found`)
+  }
+
+  const cookieStore = await cookies()
+  const hasEditAccess = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  const { canEdit } = getSessionAccessFlags(session, hasEditAccess)
+  if (!canEdit) {
+    redirect(`/sessions/${sessionId}?err=edit_locked`)
+  }
+
   await prisma.participation.update({
     where: { id: participationId },
     data: { paid },
@@ -256,6 +391,21 @@ export async function togglePaidAction(formData: FormData) {
 export async function completeSessionAction(formData: FormData) {
   const sessionId = String(formData.get('sessionId') || '')
   if (!sessionId) return
+
+  // Check EDIT LOCK
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  })
+  if (!session) {
+    redirect(`/sessions/${sessionId}?err=session_not_found`)
+  }
+
+  const cookieStore = await cookies()
+  const hasEditAccess = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  const { canEdit } = getSessionAccessFlags(session, hasEditAccess)
+  if (!canEdit) {
+    redirect(`/sessions/${sessionId}?err=edit_locked`)
+  }
 
   await prisma.$transaction([
     prisma.participation.updateMany({
@@ -291,6 +441,21 @@ export async function cancelSessionAction(formData: FormData) {
 
   if (!sessionId) return
 
+  // Check EDIT LOCK
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  })
+  if (!session) {
+    redirect(`/sessions/${sessionId}?err=session_not_found`)
+  }
+
+  const cookieStore = await cookies()
+  const hasEditAccess = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  const { canEdit } = getSessionAccessFlags(session, hasEditAccess)
+  if (!canEdit) {
+    redirect(`/sessions/${sessionId}?err=edit_locked`)
+  }
+
   await prisma.session.update({
     where: { id: sessionId },
     data: {
@@ -309,10 +474,26 @@ export async function updateSessionAction(formData: FormData) {
   const sessionId = String(formData.get('sessionId') || '')
   if (!sessionId) throw new Error('Missing sessionId')
 
+  // Check EDIT LOCK
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  })
+  if (!session) {
+    redirect(`/sessions/${sessionId}?err=session_not_found`)
+  }
+
+  const cookieStore = await cookies()
+  const hasEditAccess = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  const { canEdit } = getSessionAccessFlags(session, hasEditAccess)
+  if (!canEdit) {
+    redirect(`/sessions/${sessionId}?err=edit_locked`)
+  }
+
   const dateStr = String(formData.get('date') || '')
   const hostIdRaw = String(formData.get('hostId') || '')
   const courtAddress = String(formData.get('courtAddress') || '')
   const note = String(formData.get('note') || '')
+  const editPasscodeRaw = String(formData.get('editPasscode') ?? '').trim()
 
   const courtFee = Number(formData.get('courtFee') || 0)
   const shuttleFee = Number(formData.get('shuttleFee') || 0)
@@ -332,6 +513,7 @@ export async function updateSessionAction(formData: FormData) {
       shuttleFee,
       fundFee,
       totalAmount, // ✅ update luôn
+      ...(editPasscodeRaw && { editPasscode: editPasscodeRaw }),
     },
   })
 

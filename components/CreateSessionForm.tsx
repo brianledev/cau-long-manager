@@ -83,6 +83,15 @@ export default function CreateSessionForm({
         />
       </label>
 
+      <label className="field">
+        <span className="field-label">Mật khẩu unlock chỉnh sửa (tuỳ chọn)</span>
+        <input
+          name="editPasscode"
+          className="field-input"
+          placeholder="VD: 1234 (để trống => ai cũng edit được)"
+        />
+      </label>
+
       {/* ĐỊA CHỈ SÂN CẦU */}
       <div className="field md:col-span-2">
         <span className="field-label">Địa chỉ sân cầu / Ngày giờ</span>
