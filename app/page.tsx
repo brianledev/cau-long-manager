@@ -5,6 +5,9 @@ import { TopName } from '@/components/TopName'
 import { getGlobalTop3 } from '@/lib/getGlobalTop3'
 import PassGate from '@/components/PassGate'
 
+// Always fetch fresh data from database (disable caching)
+export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   const globalTop3Ids = await getGlobalTop3();

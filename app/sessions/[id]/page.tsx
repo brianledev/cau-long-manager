@@ -23,6 +23,10 @@ import JoinCountdown from '@/components/JoinCountdown'
 import UnlockButton from '@/components/UnlockButton'
 import LockButton from '@/components/LockButton'
 
+// Always fetch fresh data from database (disable caching)
+export const revalidate = 0
+export const dynamic = 'force-dynamic'
+
 
 
 const DEFAULT_BANK_ID = process.env.NEXT_PUBLIC_BANK_ID ?? 'MB'
