@@ -52,9 +52,10 @@ export function getSessionAccessFlags(
   const isSessionDay = now >= sessionDayStart && now < sessionDayEnd
 
   const canJoin = session.status === 'PLANNED' && isJoinOpen
+  // canEdit: trước join deadline thì tự do, sau đó cần unlock
   const canEdit =
     session.status === 'PLANNED' &&
-    (isSessionDay ? hasEditAccess : true)
+    (isJoinOpen ? true : hasEditAccess)
 
   return { isJoinOpen, isSessionDay, canJoin, canEdit }
 }
