@@ -1,6 +1,7 @@
 'use client'
 
 import { lockSessionAction } from '@/app/actions'
+import { useRouter } from 'next/navigation'
 
 interface LockButtonProps {
   sessionId: string
@@ -15,6 +16,8 @@ export default function LockButton({
   editAccess,
   sessionStatus,
 }: LockButtonProps) {
+  const router = useRouter()
+  
   // Only show button when join is locked and already unlocked
   if (isJoinOpen || !editAccess || sessionStatus !== 'PLANNED') {
     return null
@@ -24,6 +27,7 @@ export default function LockButton({
     const formData = new FormData()
     formData.append('sessionId', sessionId)
     await lockSessionAction(formData)
+    router.refresh()
   }
 
   return (
