@@ -196,8 +196,8 @@ export default async function SessionPage(props: any) {
         <JoinCountdown sessionDate={session.date} />
       </section>
 
-      {/* UNLOCK/LOCK BUTTON - SHOW ON SESSION DAY */}
-      {isSessionDay && session.status === 'PLANNED' && (
+      {/* UNLOCK/LOCK BUTTON - SHOW WHEN JOIN IS LOCKED */}
+      {!isJoinOpen && session.status === 'PLANNED' && (
         <section className={`card border-l-4 ${editAccess ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500'}`}>
           <div className="flex items-center justify-between">
             <div>
@@ -216,13 +216,13 @@ export default async function SessionPage(props: any) {
             <div className="flex gap-2">
               <UnlockButton
                 sessionId={id}
-                isSessionDay={isSessionDay}
+                isJoinOpen={isJoinOpen}
                 editAccess={editAccess}
                 sessionStatus={session.status}
               />
               <LockButton
                 sessionId={id}
-                isSessionDay={isSessionDay}
+                isJoinOpen={isJoinOpen}
                 editAccess={editAccess}
                 sessionStatus={session.status}
               />
@@ -324,8 +324,8 @@ export default async function SessionPage(props: any) {
         </section>
       )}
  
-      {/* JOIN / GUEST - chỉ hiện khi canEdit */}
-      {canEdit && (
+      {/* JOIN / GUEST - chỉ hiện khi canEdit và (join còn mở hoặc đã unlock) */}
+      {canEdit && (isJoinOpen || editAccess) && (
         <section className="card space-y-3 text-sm">
           <h2 className="card-title">Tham gia buổi này</h2>
           {!canJoin && !isSessionDay && (
@@ -454,6 +454,7 @@ export default async function SessionPage(props: any) {
                     session.fundFee
                 }
                 className="field-input"
+                readOnly
               />
             </label>
 

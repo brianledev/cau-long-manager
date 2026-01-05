@@ -4,19 +4,19 @@ import { lockSessionAction } from '@/app/actions'
 
 interface LockButtonProps {
   sessionId: string
-  isSessionDay: boolean
+  isJoinOpen: boolean
   editAccess: boolean
   sessionStatus: string
 }
 
 export default function LockButton({
   sessionId,
-  isSessionDay,
+  isJoinOpen,
   editAccess,
   sessionStatus,
 }: LockButtonProps) {
-  // Only show button if on session day and already unlocked
-  if (!isSessionDay || !editAccess || sessionStatus !== 'PLANNED') {
+  // Only show button when join is locked and already unlocked
+  if (isJoinOpen || !editAccess || sessionStatus !== 'PLANNED') {
     return null
   }
 

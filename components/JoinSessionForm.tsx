@@ -42,11 +42,11 @@ export default function JoinSessionForm({
             </select>
           </div>
 
-          <form action={joinSessionAction} className="flex flex-col gap-2 md:flex-row md:items-end">
+          <form action={joinSessionAction} className="flex flex-col gap-2 md:flex-row md:items-stretch">
             <input type="hidden" name="sessionId" value={sessionId} />
-            <div className="field md:flex-1 mb-0">
+            <div className="md:flex-1">
               <span className="field-label">Chọn tên</span>
-              <select name="memberId" className="field-select" defaultValue="">
+              <select name="memberId" className="field-select h-[42px] w-full" defaultValue="">
                 <option value="">-- Chọn tên --</option>
                 {filteredMembers.map((m) => (
                   <option key={m.id} value={m.id}>
@@ -55,7 +55,7 @@ export default function JoinSessionForm({
                 ))}
               </select>
             </div>
-            <div className="shrink-0">
+            <div className="shrink-0 flex items-end">
               <button type="submit" className="h-[42px] w-full md:w-auto">Tham gia</button>
             </div>
           </form>

@@ -293,8 +293,12 @@ export async function leaveSessionAction(formData: FormData) {
     redirect(`/sessions/${sessionId}?err=session_not_found`)
   }
 
-  const { canJoin } = getSessionAccessFlags(session, false)
-  if (!canJoin) {
+  const cookieStore = await cookies()
+  const editAccess = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  const { canJoin } = getSessionAccessFlags(session, editAccess)
+  
+  // Allow delete if join is open OR user has edit access (unlocked)
+  if (!canJoin && !editAccess) {
     redirect(`/sessions/${sessionId}?err=join_locked`)
   }
 
