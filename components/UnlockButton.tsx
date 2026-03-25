@@ -5,21 +5,19 @@ import UnlockSessionModal from './UnlockSessionModal'
 
 interface UnlockButtonProps {
   sessionId: string
-  isJoinOpen: boolean
-  editAccess: boolean
+  canEdit: boolean
   sessionStatus: string
 }
 
 export default function UnlockButton({
   sessionId,
-  isJoinOpen,
-  editAccess,
+  canEdit,
   sessionStatus,
 }: UnlockButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Only show button when join is locked and not yet unlocked
-  if (isJoinOpen || editAccess || sessionStatus !== 'PLANNED') {
+  // Show button only when locked (!canEdit)
+  if (canEdit || sessionStatus !== 'PLANNED') {
     return null
   }
 

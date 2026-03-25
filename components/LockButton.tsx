@@ -5,21 +5,19 @@ import { useRouter } from 'next/navigation'
 
 interface LockButtonProps {
   sessionId: string
-  isJoinOpen: boolean
-  editAccess: boolean
+  canEdit: boolean
   sessionStatus: string
 }
 
 export default function LockButton({
   sessionId,
-  isJoinOpen,
-  editAccess,
+  canEdit,
   sessionStatus,
 }: LockButtonProps) {
   const router = useRouter()
   
-  // Only show button when join is locked and already unlocked
-  if (isJoinOpen || !editAccess || sessionStatus !== 'PLANNED') {
+  // Show button only when open (canEdit)
+  if (!canEdit || sessionStatus !== 'PLANNED') {
     return null
   }
 

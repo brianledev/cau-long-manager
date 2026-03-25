@@ -107,7 +107,11 @@ export default async function SessionPage(props: any) {
 
   // **TÍNH FLAGS KHÓA/MỞ**
   const editAccess = cookieStore.get(`session_edit_access_${id}`)?.value === '1'
+  const manuallyLocked = cookieStore.get(`session_locked_${id}`)?.value === '1'
   const { isJoinOpen, isSessionDay, canJoin, canEdit: canEditWithTimeCheck } = getSessionAccessFlags(session, editAccess)
+  
+  // canEdit: mở theo thời gian (isJoinOpen) nhưng không bị khóa thủ công, hoặc đã unlock
+  const canEdit = (canEditWithTimeCheck && !manuallyLocked) || editAccess
 
   // Hiển thị lỗi từ query params
   const errorCode = searchParams?.err as string | undefined
@@ -123,7 +127,6 @@ export default async function SessionPage(props: any) {
   })
 
   const totalAmount = session.totalAmount ?? 0
-  const canEdit = canEditWithTimeCheck  // **CÓ THỂ CHỈNH SỬA (theo thời gian + edit lock)**
   const canQR = ['PLANNED', 'COMPLETED'].includes(session.status)
   const inputCls = 'input w-full'
   const selectCls = 'select w-full'
@@ -196,15 +199,17 @@ export default async function SessionPage(props: any) {
         <JoinCountdown sessionDate={session.date} />
       </section>
 
-      {/* UNLOCK/LOCK BUTTON - SHOW WHEN JOIN IS LOCKED */}
-      {!isJoinOpen && session.status === 'PLANNED' && (
-        <section className={`card border-l-4 ${editAccess ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500'}`}>
+      {/* UNLOCK/LOCK BUTTON - ALWAYS SHOW FOR PLANNED SESSIONS */}
+      {session.status === 'PLANNED' && (
+        <section className={`card border-l-4 ${canEdit ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-500'}`}>
           <div className="flex items-center justify-between">
             <div>
-              {editAccess ? (
+              {canEdit ? (
                 <>
-                  <h3 className="font-semibold text-green-900">✅ Buổi này đã mở khóa</h3>
-                  <p className="text-sm text-green-700 mt-1">Bạn có thể chỉnh sửa buổi. Bấm khóa khi xong.</p>
+                  <h3 className="font-semibold text-green-900">✅ Buổi đang mở</h3>
+                  <p className="text-sm text-green-700 mt-1">
+                    {isJoinOpen ? 'Chưa đến deadline, đang mở đăng ký.' : 'Đã mở khóa, bấm khóa khi xong.'}
+                  </p>
                 </>
               ) : (
                 <>
@@ -216,14 +221,12 @@ export default async function SessionPage(props: any) {
             <div className="flex gap-2">
               <UnlockButton
                 sessionId={id}
-                isJoinOpen={isJoinOpen}
-                editAccess={editAccess}
+                canEdit={canEdit}
                 sessionStatus={session.status}
               />
               <LockButton
                 sessionId={id}
-                isJoinOpen={isJoinOpen}
-                editAccess={editAccess}
+                canEdit={canEdit}
                 sessionStatus={session.status}
               />
             </div>

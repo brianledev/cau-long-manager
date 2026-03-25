@@ -173,6 +173,7 @@ export async function verifySessionEditPasscodeAction(formData: FormData): Promi
 
   // Set cookie with auto-lock at end of session day
   const cookieStore = await cookies()
+  cookieStore.delete(`session_locked_${sessionId}`) // Xóa locked flag
   cookieStore.set(`session_edit_access_${sessionId}`, '1', {
     httpOnly: true,
     maxAge: maxAge,
@@ -182,14 +183,19 @@ export async function verifySessionEditPasscodeAction(formData: FormData): Promi
   return { success: true }
 }
 
-// Lock edit passcode (remove edit access)
+// Lock session manually (set locked cookie)
 export async function lockSessionAction(formData: FormData) {
   const sessionId = String(formData.get('sessionId') || '')
 
   if (!sessionId) return
 
   const cookieStore = await cookies()
+  // Xóa edit access và set locked flag
   cookieStore.delete(`session_edit_access_${sessionId}`)
+  cookieStore.set(`session_locked_${sessionId}`, '1', {
+    httpOnly: true,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  })
 
   redirect(`/sessions/${sessionId}`)
 }
@@ -211,12 +217,14 @@ export async function joinSessionAction(formData: FormData) {
     redirect(`/sessions/${sessionId}?err=session_not_found`)
   }
 
-  // If host has unlocked editing, allow join regardless of deadline
+  // Check if host has unlocked or if manually locked
   const cookieStore = await cookies()
   const hostUnlocked = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  const manuallyLocked = cookieStore.get(`session_locked_${sessionId}`)?.value === '1'
   
   const { canJoin } = getSessionAccessFlags(session, false)
-  if (!canJoin && !hostUnlocked) {
+  // Không cho join nếu: (hết hạn OR khóa thủ công) AND chưa unlock
+  if ((!canJoin || manuallyLocked) && !hostUnlocked) {
     redirect(`/sessions/${sessionId}?err=join_locked`)
   }
 
@@ -257,12 +265,14 @@ export async function joinGuestAction(formData: FormData) {
     redirect(`/sessions/${sessionId}?err=session_not_found`)
   }
 
-  // If host has unlocked editing, allow join regardless of deadline
+  // Check if host has unlocked or if manually locked
   const cookieStore = await cookies()
   const hostUnlocked = cookieStore.get(`session_edit_access_${sessionId}`)?.value === '1'
+  const manuallyLocked = cookieStore.get(`session_locked_${sessionId}`)?.value === '1'
 
   const { canJoin } = getSessionAccessFlags(session, false)
-  if (!canJoin && !hostUnlocked) {
+  // Không cho join nếu: (hết hạn OR khóa thủ công) AND chưa unlock
+  if ((!canJoin || manuallyLocked) && !hostUnlocked) {
     redirect(`/sessions/${sessionId}?err=join_locked`)
   }
 
